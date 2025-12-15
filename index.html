@@ -458,7 +458,6 @@
       overflow: hidden;
       position: relative;
       margin-bottom: 0.9rem;
-      background: #000;
     }
 
     .hero-photo img {
@@ -664,90 +663,68 @@
       font-size: 0.78rem;
     }
 
-    .schedule-intro {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin: 0.45rem 0 0.65rem;
-    }
-
-    .schedule-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .schedule-tab {
-      flex: 1 1 calc(100% / 4 - 4px);
-      min-width: 60px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(5, 6, 8, 0.9);
-      padding: 0.3rem 0.4rem;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.18s ease, border 0.18s ease, color 0.18s ease;
-    }
-
-    .schedule-tab.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #050608;
-    }
-
-    .schedule-day {
-      display: none;
-      border-radius: 14px;
-      background: rgba(5, 6, 8, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      padding: 0.7rem 0.75rem;
-    }
-
-    .schedule-day.active {
-      display: block;
-    }
-
-    .schedule-day-title {
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 0.35rem;
-    }
-
-    .schedule-list {
-      list-style: none;
-      font-size: 0.76rem;
-      color: var(--muted);
-    }
-
-    .schedule-list li {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      padding: 0.2rem 0;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
-    }
-
-    .schedule-list li:last-child {
-      border-bottom: none;
-    }
-
-    .schedule-time {
-      font-weight: 500;
-      color: #ffffff;
-    }
-
-    .schedule-class {
-      text-align: right;
+    .schedule-image {
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #000;
+      width: 100%;
+      height: auto;
     }
 
     .schedule-note {
       margin-top: 0.55rem;
       font-size: 0.72rem;
       color: var(--muted);
+    }
+
+    /* schedule tabs (Mon–Sun) */
+    .schedule-tabs {
+      margin-bottom: 0.7rem;
+      border-radius: 14px;
+      background: rgba(5, 6, 8, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.6rem;
+    }
+
+    .schedule-days {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .schedule-day {
+      flex: 1;
+      min-width: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(10, 11, 18, 0.96);
+      color: var(--muted);
+      font-size: 0.7rem;
+      padding: 0.28rem 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .schedule-day.active {
+      background: var(--accent);
+      color: #050608;
+      border-color: var(--accent);
+    }
+
+    .schedule-content {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .schedule-panel {
+      display: none;
+    }
+
+    .schedule-panel.active {
+      display: block;
     }
 
     /* PRICING */
@@ -1149,36 +1126,24 @@
     @media (max-width: 768px) {
       :root { --nav-height: 64px; }
 
-      .nav-inner {
-        padding-top: 0.1rem;
-        flex-wrap: wrap;          /* allow wrapping so KA/EN doesn't sit on logo text */
-        row-gap: 0.4rem;
-      }
-
+      .nav-inner { padding-top: 0.1rem; }
       .brand-text-main { font-size: 0.9rem; letter-spacing: 0.09em; }
       .brand-text-sub { display: none; }
 
       .nav-links { display: none; }
       .nav-toggle { display: inline-flex; }
 
-      .nav-cta {
-        margin-left: auto;
-        gap: 0.5rem;
-      }
-
+      /* hide nav text + big CTA on mobile so nothing overflows */
       .nav-cta-text {
-        font-size: 0.68rem;
-        max-width: 120px;
+        display: none;
       }
 
-      .nav-cta-text strong { font-size: 0.78rem; }
+      header.nav .nav-cta .btn-primary {
+        display: none;
+      }
 
-      .nav-cta .btn {
-        padding: 0.42rem 0.8rem;
-        font-size: 0.74rem;
-        max-width: 140px;
-        white-space: normal;
-        text-align: center;
+      .nav-cta {
+        gap: 0.45rem;
       }
 
       .btn-icon-circle {
@@ -1231,19 +1196,6 @@
 
       .container { padding: 0 1rem; }
 
-      .brand-text-main {
-        font-size: 0.8rem;
-        letter-spacing: 0.08em;
-      }
-
-      .nav-cta-text {
-        display: none;          /* hide small text on very small screens */
-      }
-
-      .nav-cta .btn-primary {
-        display: none;          /* hide the big nav button that was going off screen */
-      }
-
       .hero-title {
         font-size: 1.85rem;
         line-height: 1.1;
@@ -1255,6 +1207,15 @@
       .hero-meta-row {
         flex-direction: column;
         gap: 0.7rem;
+      }
+
+      .lang-toggle {
+        padding: 1px 3px;
+      }
+
+      .lang-btn {
+        padding: 0.12rem 0.45rem;
+        font-size: 0.6rem;
       }
 
       .btn-icon-circle {
@@ -1318,7 +1279,10 @@
         </div>
 
         <div class="nav-cta-text">
-          <strong></strong>
+          <strong>
+            <span class="lang-ka">TSRE • წრე</span>
+            <span class="lang-en">TSRE • Circle</span>
+          </strong>
           <span class="lang-ka">მცხეთის ქუჩა 13, ვაკე</span>
           <span class="lang-en">Mtskheta St 13, Vake</span>
         </div>
@@ -1425,11 +1389,11 @@
         <div class="hero-right">
           <div class="hero-card">
             <div class="hero-photo">
-              <!-- put TSRE logo image here (save file as images/tsre-hero-logo.jpg in your repo) -->
-              <img src="images/tsre-hero-logo.jpg" alt="TSRE gym logo on wall in Vake, Tbilisi">
+              <!-- HERO: LOGO WALL IMAGE -->
+              <img src="images/tsre-logo-wall.jpg" alt="TSRE logo wall at the gym in Vake, Tbilisi">
               <div class="hero-photo-label">
-                <span class="lang-ka">TSRE • LOGO</span>
-                <span class="lang-en">TSRE • LOGO</span>
+                <span class="lang-ka">GYM • BOXING • CLASSES</span>
+                <span class="lang-en">GYM • BOXING • CLASSES</span>
               </div>
             </div>
             <div class="hero-stats-row">
@@ -1573,10 +1537,10 @@
           </div>
           <div class="section-sub">
             <span class="lang-ka">
-              კომბინაცია ჩვეულებრივი დარბაზის ვარჯიშისა და ჯგუფური კლასების. ქვემოთ ნახავ მთავარ მიმართულებებს და სესიების განრიგს.
+              კომბინაცია ჩვეულებრივი დარბაზის ვარჯიშისა და ჯგუფური კლასების. ქვემოთ ნახავ მთავარ მიმართულებებსა და განახლებულ ცხრილს.
             </span>
             <span class="lang-en">
-              Combine classic gym work with group classes. Below you see the main class types plus a clear weekly timetable.
+              Combine classic gym work with group classes. Below you see the main class types plus the updated official timetable.
             </span>
           </div>
         </div>
@@ -1697,262 +1661,93 @@
 
           <aside class="schedule-card">
             <div class="section-eyebrow">
-              <span class="lang-ka">კვირის განრიგი</span>
-              <span class="lang-en">Weekly Timetable</span>
+              <span class="lang-ka">ოფიციალური ცხრილი</span>
+              <span class="lang-en">Official Timetable</span>
             </div>
             <h3 class="section-title" style="font-size:1rem;">
-              <span class="lang-ka">დღეებით დალაგებული სესიები</span>
-              <span class="lang-en">Classes By Day</span>
+              <span class="lang-ka">ფასები, სავარჯიშოები და განრიგი</span>
+              <span class="lang-en">Pricing, Exercises & Schedule</span>
             </h3>
-            <p class="schedule-intro">
+            <p style="font-size:0.8rem; color:var(--muted); margin:0.45rem 0 0.65rem;">
               <span class="lang-ka">
-                დააჭირე დღეს და ნახე რა ხდება TSRE–ში ამ დღეს. რეალური საათები შეგიძლია მოგვიანებით შეცვალო HTML–ში.
+                განახლებული ცხრილი TSRE–დან – აბონემენტები, დამატებითი კლასები და განრიგი ერთ ეკრანზე.
               </span>
               <span class="lang-en">
-                Tap a weekday to see sample sessions. Exact times can be adjusted later directly in the HTML.
+                Directly from TSRE’s latest update – memberships, complimentary classes and schedule in one place.
               </span>
             </p>
 
+            <!-- SCHEDULE TABS MON–SUN -->
             <div class="schedule-tabs">
-              <button class="schedule-tab active" data-day="mon">
-                <span class="lang-ka">ორშ</span><span class="lang-en">Mon</span>
-              </button>
-              <button class="schedule-tab" data-day="tue">
-                <span class="lang-ka">სამ</span><span class="lang-en">Tue</span>
-              </button>
-              <button class="schedule-tab" data-day="wed">
-                <span class="lang-ka">ოთხ</span><span class="lang-en">Wed</span>
-              </button>
-              <button class="schedule-tab" data-day="thu">
-                <span class="lang-ka">ხუთ</span><span class="lang-en">Thu</span>
-              </button>
-              <button class="schedule-tab" data-day="fri">
-                <span class="lang-ka">პარ</span><span class="lang-en">Fri</span>
-              </button>
-              <button class="schedule-tab" data-day="sat">
-                <span class="lang-ka">შაბ</span><span class="lang-en">Sat</span>
-              </button>
-              <button class="schedule-tab" data-day="sun">
-                <span class="lang-ka">კვი</span><span class="lang-en">Sun</span>
-              </button>
-            </div>
-
-            <!-- MON -->
-            <div class="schedule-day active" data-day="mon">
-              <div class="schedule-day-title">
-                <span class="lang-ka">ორშაბათი – კვირის დასაწყისი</span>
-                <span class="lang-en">Monday – Strong Start</span>
+              <div class="schedule-days">
+                <button type="button" class="schedule-day active" data-day="mon">
+                  <span class="lang-ka">ორშ</span>
+                  <span class="lang-en">Mon</span>
+                </button>
+                <button type="button" class="schedule-day" data-day="tue">
+                  <span class="lang-ka">სა</span>
+                  <span class="lang-en">Tue</span>
+                </button>
+                <button type="button" class="schedule-day" data-day="wed">
+                  <span class="lang-ka">ოთხ</span>
+                  <span class="lang-en">Wed</span>
+                </button>
+                <button type="button" class="schedule-day" data-day="thu">
+                  <span class="lang-ka">ხუთ</span>
+                  <span class="lang-en">Thu</span>
+                </button>
+                <button type="button" class="schedule-day" data-day="fri">
+                  <span class="lang-ka">პარ</span>
+                  <span class="lang-en">Fri</span>
+                </button>
+                <button type="button" class="schedule-day" data-day="sat">
+                  <span class="lang-ka">შაბ</span>
+                  <span class="lang-en">Sat</span>
+                </button>
+                <button type="button" class="schedule-day" data-day="sun">
+                  <span class="lang-ka">კვი</span>
+                  <span class="lang-en">Sun</span>
+                </button>
               </div>
-              <ul class="schedule-list">
-                <li>
-                  <span class="schedule-time">08:30</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">HIIT / სრული სხეული</span>
-                    <span class="lang-en">HIIT / Full Body</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">19:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">ბოქსი (დამწყები)</span>
-                    <span class="lang-en">Boxing (Beginner)</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">20:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">სპინინგი</span>
-                    <span class="lang-en">Spinning</span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- TUE -->
-            <div class="schedule-day" data-day="tue">
-              <div class="schedule-day-title">
-                <span class="lang-ka">სამშაბათი – ზედა სხეული</span>
-                <span class="lang-en">Tuesday – Upper Body</span>
+              <div class="schedule-content">
+                <div class="schedule-panel active" data-day="mon">
+                  <span class="lang-ka">დარბაზი + საღამოს ბოქსი / HIIT – ძლიერი სტარტი კვირისთვის.</span>
+                  <span class="lang-en">Gym + evening boxing / HIIT – strong start to the week.</span>
+                </div>
+                <div class="schedule-panel" data-day="tue">
+                  <span class="lang-ka">ძალა და ფეხები + დამატებითი პრესი/დუნდულა ან სპინინგი.</span>
+                  <span class="lang-en">Strength & legs plus optional abs / glutes or spinning.</span>
+                </div>
+                <div class="schedule-panel" data-day="wed">
+                  <span class="lang-ka">ბაქსინგი და ფუნქციური HIIT – უფრო მაღალი პულსი და კონდიცია.</span>
+                  <span class="lang-en">Boxing and functional HIIT – higher heart rate, conditioning focus.</span>
+                </div>
+                <div class="schedule-panel" data-day="thu">
+                  <span class="lang-ka">ტანი + ზედა სხეული, სპინინგი ან MetCon კლასები.</span>
+                  <span class="lang-en">Upper body gym work, spinning or MetCon classes.</span>
+                </div>
+                <div class="schedule-panel" data-day="fri">
+                  <span class="lang-ka">შერეული ძალა და კარდიო – კვირის ერთ-ერთი ყველაზე დატვირთული დღე.</span>
+                  <span class="lang-en">Mixed strength and cardio – one of the heaviest days of the week.</span>
+                </div>
+                <div class="schedule-panel" data-day="sat">
+                  <span class="lang-ka">დილით კლასები (MetCon / Pilates / ბოქსი) + თავისუფალი დარბაზი.</span>
+                  <span class="lang-en">Morning classes (MetCon / Pilates / boxing) plus open gym.</span>
+                </div>
+                <div class="schedule-panel" data-day="sun">
+                  <span class="lang-ka">უფრო მსუბუქი დღე – იოგა, მობილურობა, მსუბუქი კარდიო და გაჭიმვა.</span>
+                  <span class="lang-en">Lighter day – yoga, mobility, light cardio and stretching.</span>
+                </div>
               </div>
-              <ul class="schedule-list">
-                <li>
-                  <span class="schedule-time">09:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">ძალა (ზედა ნაწილი)</span>
-                    <span class="lang-en">Strength (Upper)</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">18:30</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">აბსი & დუნდულა</span>
-                    <span class="lang-en">Abs & Glutes</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">20:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">ბავშვთა ბოქსი</span>
-                    <span class="lang-en">Kids Boxing</span>
-                  </span>
-                </li>
-              </ul>
             </div>
 
-            <!-- WED -->
-            <div class="schedule-day" data-day="wed">
-              <div class="schedule-day-title">
-                <span class="lang-ka">ოთხშაბათი – კონდიცია</span>
-                <span class="lang-en">Wednesday – Conditioning</span>
-              </div>
-              <ul class="schedule-list">
-                <li>
-                  <span class="schedule-time">08:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">MetCon</span>
-                    <span class="lang-en">MetCon</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">19:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">ბოქსი (შერეული დონე)</span>
-                    <span class="lang-en">Boxing (Mixed Level)</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">20:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">HIIT</span>
-                    <span class="lang-en">HIIT</span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- THU -->
-            <div class="schedule-day" data-day="thu">
-              <div class="schedule-day-title">
-                <span class="lang-ka">ხუთშაბათი – ქვედა სხეული</span>
-                <span class="lang-en">Thursday – Lower Body</span>
-              </div>
-              <ul class="schedule-list">
-                <li>
-                  <span class="schedule-time">09:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">ძალა (ქვედა ნაწილი)</span>
-                    <span class="lang-en">Strength (Lower)</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">18:30</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">სპინინგი</span>
-                    <span class="lang-en">Spinning</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">20:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">აბსი & დუნდულა</span>
-                    <span class="lang-en">Abs & Glutes</span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- FRI -->
-            <div class="schedule-day" data-day="fri">
-              <div class="schedule-day-title">
-                <span class="lang-ka">პარასკევი – ბოქსი & HIIT</span>
-                <span class="lang-en">Friday – Boxing & HIIT</span>
-              </div>
-              <ul class="schedule-list">
-                <li>
-                  <span class="schedule-time">08:30</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">HIIT / კარდიო</span>
-                    <span class="lang-en">HIIT / Cardio</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">19:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">ბოქსი</span>
-                    <span class="lang-en">Boxing</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">20:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">ძალა (სრული სხეული)</span>
-                    <span class="lang-en">Full Body Strength</span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- SAT -->
-            <div class="schedule-day" data-day="sat">
-              <div class="schedule-day-title">
-                <span class="lang-ka">შაბათი – ვიკენდ სესიები</span>
-                <span class="lang-en">Saturday – Weekend Sessions</span>
-              </div>
-              <ul class="schedule-list">
-                <li>
-                  <span class="schedule-time">10:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">იოგა & მობილურობა</span>
-                    <span class="lang-en">Yoga & Mobility</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">12:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">MetCon</span>
-                    <span class="lang-en">MetCon</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">17:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">აბსი & დუნდულა</span>
-                    <span class="lang-en">Abs & Glutes</span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <!-- SUN -->
-            <div class="schedule-day" data-day="sun">
-              <div class="schedule-day-title">
-                <span class="lang-ka">კვირა – აღდგენა და მსუბუქი დღე</span>
-                <span class="lang-en">Sunday – Recovery & Light</span>
-              </div>
-              <ul class="schedule-list">
-                <li>
-                  <span class="schedule-time">10:30</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">იოგა</span>
-                    <span class="lang-en">Yoga</span>
-                  </span>
-                </li>
-                <li>
-                  <span class="schedule-time">12:00</span>
-                  <span class="schedule-class">
-                    <span class="lang-ka">გადასვლა დარბაზში (თავისუფალი ვარჯიში)</span>
-                    <span class="lang-en">Open Gym (Free Training)</span>
-                  </span>
-                </li>
-              </ul>
-            </div>
-
+            <img src="images/tsre-schedule.png" alt="TSRE pricing and class schedule" class="schedule-image">
             <p class="schedule-note">
               <span class="lang-ka">
-                ზუსტი განრიგი და აქციები – ყოველთვის გადაამოწმე TSRE–ს Instagram story–ში ან ჰკითხე რეცეფციას.
+                ბოლო ცვლილებებისთვის ყოველთვის გადაამოწმე TSRE–ს Instagram story ან მოიკითხე რეცეფციაზე.
               </span>
               <span class="lang-en">
-                For exact times and promos always double-check TSRE’s Instagram stories or ask at the front desk.
+                For last minute changes always check TSRE’s Instagram stories or ask at the front desk.
               </span>
             </p>
           </aside>
@@ -1976,10 +1771,10 @@
           </div>
           <div class="section-sub">
             <span class="lang-ka">
-              ფასები ოფიციალურ ცხრილზეა მიბმული. შენ ან კლუბის ადმინისტრატორი მარტივად შეცვლით რიცხვებს HTML–ში.
+              ფასები მიჰყვება ოფიციალურ ცხრილს. შენ ან კლუბის ადმინისტრატორი მარტივად შეცვლით რიცხვებს.
             </span>
             <span class="lang-en">
-              Prices follow the official list. You or the owner can quickly edit the numbers later in the HTML.
+              Numbers follow the official schedule image. You or the owner can quickly edit them later in the HTML.
             </span>
           </div>
         </div>
@@ -2042,16 +1837,16 @@
               </li>
             </ul>
             <button class="btn btn-primary" onclick="scrollToId('contact')">
-              <span class="lang-ka">შემოგვიერთდი</span>
+              <span class="lang-ka">შემোগვერთდი</span>
               <span class="lang-en">Join TSRE Today</span>
               <span class="btn-icon-circle">›</span>
             </button>
             <div class="pricing-footer-note">
               <span class="lang-ka">
-                3, 6 და 12 თვიანი პაკეტების ფასები იგივე სიაშია ნაჩვენები და შეიძლება ადვილად განახლდეს.
+                3, 6 და 12 თვიანი პაკეტების ფასები იგივე ცხრილშია ნაჩვენები და შეიძლება ადვილად განახლდეს.
               </span>
               <span class="lang-en">
-                3, 6 and 12 month packs follow the same price list and can be updated anytime.
+                3, 6 and 12 month packs follow the same price list in the schedule image and can be updated anytime.
               </span>
             </div>
           </article>
@@ -2327,8 +2122,8 @@
 
         <div class="gallery-grid">
           <div class="gallery-main">
-            <!-- save your new uploaded photo as images/tsre-gallery-main.jpg -->
-            <img src="images/tsre-gallery-main.jpg" alt="Main TSRE gym interior view">
+            <!-- MAIN INTERIOR IMAGE -->
+            <img src="images/tsre-main-gym.jpg" alt="TSRE main gym interior view">
           </div>
           <div class="gallery-side">
             <div class="gallery-thumb">
@@ -2407,7 +2202,7 @@
               <span>Русский</span>
             </div>
 
-            <!-- CONTACT FORM WIRED TO FormSubmit TOKEN -->
+            <!-- CONTACT FORM – NOW USING FORM TOKEN -->
             <form class="contact-form" action="https://formsubmit.co/144798a00438520aaa278d5bf3f9d1f5" method="POST">
               <!-- FormSubmit config -->
               <input type="hidden" name="_captcha" value="false">
@@ -2456,10 +2251,10 @@
 
             <p class="contact-footnote">
               <span class="lang-ka">
-                ეს ფორმა თქვენს შეტყობინებას პირდაპირ აგზავნის TSRE–ს ელფოსტაზე FormSubmit–ის მეშვეობით.
+                ეს ფორმა თქვენს შეტყობინებას პირდაპირ აგზავნის TSRE–ს ელფოსტაზე – საჭიროების შემთხვევაში მისამართი მარტივად იცვლება კოდში.
               </span>
               <span class="lang-en">
-                This form sends your message directly to TSRE’s inbox via FormSubmit.
+                This form sends your request directly to the gym’s email – the address can be updated later in the HTML.
               </span>
             </p>
           </aside>
@@ -2472,8 +2267,8 @@
   <footer>
     <div class="container footer-inner">
       <div>
-        <span class="lang-ka">© <span id="year"></span> TSRE • წრე</span>
-        <span class="lang-en">© <span id="year-en"></span> TSRE • Circle</span>
+        <span class="lang-ka">© <span id="year"></span> TSRE • წრე – სავარჯიშო და ფიტნეს კლუბი.</span>
+        <span class="lang-en">© <span id="year-en"></span> TSRE • Circle – Gym & Fitness Club.</span>
       </div>
       <div class="footer-links">
         <a href="#hero">
@@ -2549,17 +2344,16 @@
   });
 
   // schedule tabs
-  const scheduleTabs = document.querySelectorAll('.schedule-tab');
-  const scheduleDays = document.querySelectorAll('.schedule-day');
+  const dayButtons = document.querySelectorAll('.schedule-day');
+  const dayPanels = document.querySelectorAll('.schedule-panel');
 
-  scheduleTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const day = tab.dataset.day;
-      scheduleTabs.forEach(t => t.classList.remove('active'));
-      scheduleDays.forEach(d => d.classList.remove('active'));
-      tab.classList.add('active');
-      const activeDay = document.querySelector('.schedule-day[data-day="' + day + '"]');
-      if (activeDay) activeDay.classList.add('active');
+  dayButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const day = btn.dataset.day;
+      dayButtons.forEach(b => b.classList.toggle('active', b === btn));
+      dayPanels.forEach(panel => {
+        panel.classList.toggle('active', panel.dataset.day === day);
+      });
     });
   });
 </script>
