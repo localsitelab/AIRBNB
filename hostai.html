@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<script src="https://cdn.tailwindcss.com"></script>
+<title>HostAI</title>
+<style>
+body{background:#070b14;color:#fff;overflow-x:hidden}
+.bg{background:linear-gradient(135deg,#08111f,#111827,#0b3b2e);background-size:300% 300%;animation:g 12s infinite}
+@keyframes g{50%{background-position:100% 50%}}
+.glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.15)}
+.card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 0 40px rgba(16,185,129,.4);transition:.35s}
+.spin{display:none;border:5px solid #334155;border-top-color:#10b981;border-radius:50%;width:42px;height:42px;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.marquee{white-space:nowrap;animation:m 18s linear infinite}
+@keyframes m{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+</style></head>
+<body class="bg min-h-screen">
+<section id="gate" class="max-w-6xl mx-auto p-8">
+<h1 class="text-6xl font-black text-center">HostAI</h1>
+<p class="text-center text-slate-300 mt-3">Luxury AI optimization for short-term rental businesses.</p>
+<div class="grid md:grid-cols-2 gap-8 mt-12">
+<div class="glass card rounded-3xl p-8">
+<h2 class="text-3xl font-bold">AI Autonomous Enhancement</h2>
+<p class="text-5xl font-black my-6">$25<span class="text-xl">/mo</span></p>
+<p>24/7 AI updates, pricing optimization, listing improvements.</p>
+<button onclick="enter()" class="mt-8 w-full bg-emerald-500 rounded-xl py-3 font-bold">Choose AI</button>
+</div>
+<div class="glass card rounded-3xl p-8">
+<h2 class="text-3xl font-bold">Human Expert Co‑Pilot</h2>
+<p class="text-5xl font-black my-6">$26<span class="text-xl">/mo</span></p>
+<p>Dedicated expert reviews, strategy sessions, manual optimization.</p>
+<button onclick="enter()" class="mt-8 w-full bg-amber-500 rounded-xl py-3 font-bold text-black">Choose Human</button>
+</div></div></section>
+
+<section id="dash" class="hidden max-w-7xl mx-auto p-8">
+<div class="flex justify-between items-center">
+<h2 class="text-4xl font-bold">Optimization Dashboard</h2>
+<button onclick="runAI()" class="bg-emerald-500 px-6 py-3 rounded-xl font-bold">Run AI Enhancement</button>
+</div>
+<div id="spinner" class="spin mx-auto my-8"></div>
+<div id="content">
+<div class="glass rounded-2xl p-4 overflow-hidden my-6"><div class="marquee">🧠 Learned: 5-word titles increased bookings 18% • Weekend pricing +4% • Family amenities trending • Better photos improve CTR 23%</div></div>
+<div class="grid md:grid-cols-2 gap-6">
+<div class="glass rounded-2xl p-6"><h3 class="font-bold text-xl mb-3">Current Listing</h3><p>Apartment in Tbilisi</p></div>
+<div class="glass rounded-2xl p-6 border border-emerald-400 shadow-2xl shadow-emerald-500/30"><h3 class="font-bold text-xl mb-3">AI Enhanced</h3><p><b>Luxury Skyline Retreat</b> • Walk to Old Town • Fast WiFi • Designer Interior</p></div>
+</div>
+<div class="grid md:grid-cols-3 gap-5 mt-6">
+<div class="glass p-5 rounded-xl"><div class="text-slate-400">Occupancy</div><div class="text-3xl font-bold text-emerald-400">+18%</div></div>
+<div class="glass p-5 rounded-xl"><div class="text-slate-400">Revenue Lift</div><div class="text-3xl font-bold text-yellow-300">$620/mo</div></div>
+<div class="glass p-5 rounded-xl"><div class="text-slate-400">AI Score</div><div class="text-3xl font-bold">98/100</div></div>
+</div>
+</div></section>
+<script>
+function enter(){gate.classList.add('hidden');dash.classList.remove('hidden')}
+function runAI(){spinner.style.display='block';content.style.opacity=.3;setTimeout(()=>{spinner.style.display='none';content.style.opacity=1;alert('Optimization Complete!')},2200)}
+</script></body></html>
