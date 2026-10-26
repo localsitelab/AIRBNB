@@ -1,762 +1,1684 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HostAI - Airbnb Optimization Platform</title>
+    <title>OrvianHost — Luxury Airbnb Optimization & Co-Hosting · Tbilisi</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Bodoni Moda (Didone Luxury Serif), Noto Serif Georgian, Plus Jakarta Sans (Bold Numerals & Body), Noto Sans Georgian -->
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,500;1,6..96,700&family=Noto+Serif+Georgian:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Georgian:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
+        :root {
+            --obsidian: #070A12;
+            --navy-deep: #0B132B;
+            --navy-card: #101B3B;
+            --emerald-royal: #093824;
+            --burgundy-rich: #4A121A;
+            --gold-light: #F3E5AB;
+            --gold-primary: #D4AF37;
+            --gold-dark: #AA7C11;
+            --ivory: #FAF8F5;
+            --border-gold: rgba(212, 175, 55, 0.24);
+        }
+
+        *, *::before, *::after {
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-glow: #00d4ff;
-            --secondary-glow: #00ff88;
-            --dark-bg: #0a0e27;
-            --card-bg: #111827;
-            --border-color: #1f2937;
-        }
-
         body {
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 100%);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Noto Sans Georgian', sans-serif;
+            background-color: var(--obsidian);
+            color: var(--ivory);
+            -webkit-tap-highlight-color: transparent;
+            transition: opacity 0.25s ease, transform 0.25s ease;
             overflow-x: hidden;
-            color: #e5e7eb;
         }
 
-        /* === ANIMATIONS === */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes neonGlow {
-            0%, 100% {
-                box-shadow: 0 0 10px rgba(0, 212, 255, 0.3), 0 0 20px rgba(0, 212, 255, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(0, 212, 255, 0.6), 0 0 40px rgba(0, 212, 255, 0.3);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -1000px 0;
-            }
-            100% {
-                background-position: 1000px 0;
-            }
-        }
-
-        @keyframes pulse-subtle {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-        }
-
-        @keyframes rotate-card {
-            from {
-                transform: rotateY(0deg);
-            }
-            to {
-                transform: rotateY(360deg);
-            }
-        }
-
-        @keyframes scroll-marquee {
-            0% {
-                transform: translateX(100%);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
-
-        @keyframes slide-down {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        /* === UTILITY CLASSES === */
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .slide-in-left {
-            animation: slideInLeft 0.8s ease-out;
-        }
-
-        .slide-in-right {
-            animation: slideInRight 0.8s ease-out;
-        }
-
-        .neon-glow {
-            animation: neonGlow 2s ease-in-out infinite;
-        }
-
-        .float {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .glass {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(31, 41, 55, 0.5);
-        }
-
-        .glass-border {
-            border: 2px solid rgba(0, 212, 255, 0.2);
-            background: rgba(17, 24, 39, 0.4);
-            backdrop-filter: blur(8px);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hover-lift {
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-8px);
-        }
-
-        .pricing-card {
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-12px);
-        }
-
-        .pricing-card.ai-option:hover {
-            animation: neonGlow 2s ease-in-out infinite;
-        }
-
-        .pricing-card::before {
+        /* Subtle Luxury Film-Grain Noise Overlay */
+        body::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 2px;
-            background: linear-gradient(135deg, transparent, rgba(0, 212, 255, 0.3), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .pricing-card:hover::before {
-            opacity: 1;
-        }
-
-        .marquee-container {
-            overflow: hidden;
-            position: relative;
-            width: 100%;
-        }
-
-        .marquee {
-            display: flex;
-            animation: scroll-marquee 20s linear infinite;
-            width: max-content;
-        }
-
-        .marquee:hover {
-            animation-play-state: paused;
-        }
-
-        .marquee-item {
-            white-space: nowrap;
-            padding: 0 40px;
-            display: flex;
-            align-items: center;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(0, 212, 255, 0.2);
-            border-top-color: #00d4ff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .comparison-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            position: relative;
-        }
-
-        @media (max-width: 768px) {
-            .comparison-split {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-        }
-
-        .comparison-panel {
-            padding: 2rem;
-            border-radius: 12px;
-            transition: all 0.4s ease-out;
-        }
-
-        .comparison-panel.original {
-            background: rgba(17, 24, 39, 0.5);
-            border: 1px solid rgba(31, 41, 55, 0.8);
-        }
-
-        .comparison-panel.optimized {
-            border: 2px solid rgba(0, 212, 255, 0.4);
-            background: rgba(0, 212, 255, 0.05);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-weight: 600;
-            color: #00ff88;
-        }
-
-        .metric-card {
-            padding: 1.5rem;
-            border-radius: 10px;
-            background: rgba(17, 24, 39, 0.6);
-            border: 1px solid rgba(0, 212, 255, 0.15);
-            transition: all 0.3s ease;
-        }
-
-        .metric-card:hover {
-            border-color: rgba(0, 212, 255, 0.4);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
-        }
-
-        .metric-value {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .dashboard-enter {
-            animation: slideInLeft 0.8s ease-out;
-        }
-
-        .stagger-child {
-            animation: fadeInUp 0.8s ease-out backwards;
-        }
-
-        .stagger-child:nth-child(1) { animation-delay: 0.1s; }
-        .stagger-child:nth-child(2) { animation-delay: 0.2s; }
-        .stagger-child:nth-child(3) { animation-delay: 0.3s; }
-        .stagger-child:nth-child(4) { animation-delay: 0.4s; }
-
-        .enhanced-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            line-height: 1.4;
-            color: #fff;
-            margin: 1rem 0;
-        }
-
-        .enhanced-desc {
-            color: #d1d5db;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        .ai-chip {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #00d4ff;
-            margin-bottom: 1rem;
-        }
-
-        /* Responsive tweaks */
-        @media (max-width: 640px) {
-            .pricing-card {
-                padding: 1.5rem !important;
-            }
-
-            .enhanced-title {
-                font-size: 1.2rem;
-            }
-
-            .metric-value {
-                font-size: 1.5rem;
-            }
-
-            .comparison-panel {
-                padding: 1.5rem;
-            }
-        }
-
-        /* Loading state overlay */
-        .loading-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(10, 14, 39, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeInUp 0.3s ease-out;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.45;
         }
 
-        .loading-content {
-            text-align: center;
+        /* Editorial Luxury Serif Headings (Bodoni Moda + Noto Serif Georgian) */
+        h1, h2, h3, h4, .font-luxury {
+            font-family: 'Bodoni Moda', 'Noto Serif Georgian', Georgia, serif;
+            letter-spacing: -0.02em;
         }
 
-        .loading-content h3 {
-            margin-top: 1rem;
-            color: #00d4ff;
-            font-weight: 600;
+        /* Thick, High-Contrast Bold Font for ALL Numbers, Prices, Stats & Phone Numbers */
+        .font-num {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans Georgian', sans-serif !important;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum" 1;
+            font-weight: 800 !important;
+            letter-spacing: -0.01em;
         }
 
-        .loading-content p {
-            color: #9ca3af;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
+        /* Bilingual Language Visibility System (Supports both 'en' and 'ka') */
+        html[lang="en"] [data-lang="ka"] { display: none !important; }
+        html[lang="ka"] [data-lang="en"] { display: none !important; }
+
+        /* Metallic Champagne Gold Gradients */
+        .gradient-text {
+            background: linear-gradient(135deg, #FFF5D6 0%, #D4AF37 45%, #AA7C11 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        /* Feed animation */
-        .feed-item {
-            animation: slideInLeft 0.6s ease-out backwards;
+        .bg-gold-gradient {
+            background: linear-gradient(135deg, #E8C766 0%, #D4AF37 50%, #9E720D 100%);
+        }
+        .bg-gold-gradient:hover {
+            background: linear-gradient(135deg, #F3E5AB 0%, #E5C158 50%, #B58716 100%);
         }
 
-        .feed-item:nth-child(1) { animation-delay: 0s; }
-        .feed-item:nth-child(2) { animation-delay: 0.1s; }
-        .feed-item:nth-child(3) { animation-delay: 0.2s; }
+        /* Ambient Floating Orbs & Architectural Grid */
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(212, 175, 55, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.04) 1px, transparent 1px);
+            background-size: 76px 76px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 45%, black 0%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 45%, black 0%, transparent 100%);
+        }
 
-        .success-message {
-            animation: slide-down 0.5s ease-out;
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(28px, 20px) scale(1.08); }
+        }
+        .orb-animate {
+            animation: orbFloat 8s ease-in-out infinite alternate;
+        }
+
+        /* Live Pulsing Call Indicator Dot */
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(0.55); opacity: 0.45; }
+        }
+        .live-dot {
+            animation: pulseDot 1.5s infinite;
+        }
+
+        /* Language Switch Page Transition */
+        body.lang-switching {
+            opacity: 0.2;
+            transform: scale(0.992);
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Consultation Target Gold Glow Pulse */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.85); transform: scale(1); }
+            50% { box-shadow: 0 0 0 24px rgba(212, 175, 55, 0); transform: scale(1.01); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); transform: scale(1); }
+        }
+        .highlight-pulse {
+            animation: pulseGlow 1.3s ease-out;
+        }
+
+        /* Flying Paper Plane Animation on Form Submit */
+        @keyframes flyPlane {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+            35% { transform: translate(-8px, 5px) scale(0.9) rotate(-10deg); opacity: 1; }
+            100% { transform: translate(55px, -45px) scale(1.35) rotate(15deg); opacity: 0; }
+        }
+        .fly-away {
+            animation: flyPlane 0.65s ease-in forwards;
+        }
+
+        /* Custom Dropdown & Modal Reveal Animations */
+        @keyframes dropdownReveal {
+            0% { opacity: 0; transform: translateY(-8px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .dropdown-open {
+            animation: dropdownReveal 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Process Item Left Gold Bar Hover */
+        .process-item {
+            position: relative;
+            transition: padding-left 0.3s ease, background-color 0.3s ease;
+        }
+        .process-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #F3E5AB, #D4AF37);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.35s ease;
+        }
+        .process-item:hover {
+            padding-left: 1.25rem;
+        }
+        .process-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* Custom Gold Range Slider */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #D4AF37;
+            border: 3px solid #070A12;
+            cursor: pointer;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.8);
         }
     </style>
 </head>
-<body>
-    <!-- PRICING GATEWAY SCREEN -->
-    <div id="pricingGateway" class="min-h-screen flex items-center justify-center p-4">
-        <div class="max-w-6xl w-full">
-            <!-- Header -->
-            <div class="text-center mb-16 fade-in-up">
-                <div class="inline-block mb-4">
-                    <div class="text-4xl font-black gradient-text">⚡ HostAI</div>
+<body class="bg-[#070A12] text-[#FAF8F5] selection:bg-[#D4AF37] selection:text-[#070A12]">
+
+    <!-- ========================================== -->
+    <!-- FLOATING TOAST NOTIFICATION                -->
+    <!-- ========================================== -->
+    <div id="toast" class="fixed bottom-5 right-5 left-5 sm:left-auto z-[80] transform translate-y-28 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-[#0B132B] text-[#FAF8F5] px-5 py-4 rounded-2xl shadow-2xl border-2 border-[#D4AF37] flex items-center space-x-3.5 max-w-md ml-auto">
+            <span class="w-7 h-7 rounded-full bg-gold-gradient text-[#070A12] flex items-center justify-center text-sm font-extrabold shrink-0 shadow-md">✓</span>
+            <p id="toast-message" class="text-xs sm:text-sm font-semibold tracking-wide leading-snug"></p>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- LUXURY MULTI-CHANNEL DISPATCH MODAL        -->
+    <!-- ========================================== -->
+    <div id="luxuryActionModal" class="hidden fixed inset-0 z-[70] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto" onclick="handleModalBackdropClick(event)">
+        <div class="bg-[#0B132B] text-[#FAF8F5] border-2 border-[#D4AF37] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative my-8" onclick="event.stopPropagation()">
+            <button type="button" onclick="closeLuxuryModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#070A12] hover:bg-[#4A121A] text-[#F3E5AB] border border-[#D4AF37]/40 flex items-center justify-center text-sm font-bold transition">
+                ✕
+            </button>
+
+            <div class="flex items-center space-x-3.5 mb-5">
+                <div id="modalBadgeIcon" class="w-12 h-12 rounded-2xl bg-gold-gradient text-[#070A12] flex items-center justify-center text-2xl font-bold shadow-lg shrink-0">
+                    ✈️
                 </div>
-                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-                    Supercharge Your Listings
-                </h1>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-                    Choose your path to maximum occupancy and revenue growth
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#D4AF37] block">
+                        OrvianHost Private Concierge
+                    </span>
+                    <h3 id="modalTitle" class="text-xl sm:text-2xl font-luxury font-bold text-[#FAF8F5]">
+                        <span data-lang="en">Direct Concierge Dispatch</span>
+                        <span data-lang="ka">პირდაპირი გაგზავნა</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div id="modalBodyContent" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- STICKY LUXURY NAVBAR                       -->
+    <!-- ========================================== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#070A12]/85 backdrop-blur-xl border-b border-[#D4AF37]/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between">
+            <!-- Brand Logo: OrvianHost -->
+            <a href="#" onclick="scrollToSection('hero'); return false;" class="flex items-center space-x-3 group focus:outline-none">
+                <div class="w-10 h-10 rounded-xl bg-gold-gradient flex items-center justify-center text-[#070A12] font-luxury font-extrabold text-xl shadow-lg shadow-[#D4AF37]/20 group-hover:scale-105 transition border border-[#F3E5AB]/60">
+                    O
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl sm:text-2xl font-luxury font-bold tracking-tight text-[#FAF8F5] leading-none">
+                        Orvian<em class="gradient-text font-luxury italic">Host</em>
+                    </span>
+                    <span class="text-[9px] uppercase tracking-[0.24em] text-[#D4AF37]/85 font-semibold mt-0.5">
+                        Tbilisi · Concierge
+                    </span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden lg:flex items-center space-x-7 text-xs uppercase tracking-[0.14em] font-semibold text-[#FAF8F5]/75">
+                <button type="button" onclick="scrollToSection('problems')" class="hover:text-[#D4AF37] transition">
+                    <span data-lang="en">The Problem</span>
+                    <span data-lang="ka">პრობლემა</span>
+                </button>
+                <button type="button" onclick="scrollToSection('services')" class="hover:text-[#D4AF37] transition">
+                    <span data-lang="en">Services</span>
+                    <span data-lang="ka">სერვისები</span>
+                </button>
+                <button type="button" onclick="scrollToSection('results')" class="hover:text-[#D4AF37] transition">
+                    <span data-lang="en">Case Study</span>
+                    <span data-lang="ka">შედეგი</span>
+                </button>
+                <button type="button" onclick="scrollToSection('how')" class="hover:text-[#D4AF37] transition">
+                    <span data-lang="en">How It Works</span>
+                    <span data-lang="ka">როგორ მუშაობს</span>
+                </button>
+                <button type="button" onclick="scrollToSection('pricing')" class="hover:text-[#D4AF37] transition">
+                    <span data-lang="en">Pricing</span>
+                    <span data-lang="ka">ფასი</span>
+                </button>
+            </div>
+
+            <!-- Right Controls: EN | GE Pill Switcher + Live Call Button + Free Audit Button -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- EN / GE Toggle Pill -->
+                <div id="langTogglePill" class="flex bg-[#0B132B] border border-[#D4AF37]/40 rounded-full p-0.5 shadow-inner transition-transform duration-300">
+                    <button type="button" id="btnLangEn" onclick="setLanguage('en')" class="px-2.5 sm:px-3 py-1 rounded-full text-xs font-extrabold transition-all duration-200 bg-gold-gradient text-[#070A12]">
+                        EN
+                    </button>
+                    <button type="button" id="btnLangKa" onclick="setLanguage('ka')" class="px-2.5 sm:px-3 py-1 rounded-full text-xs font-extrabold transition-all duration-200 text-[#FAF8F5]/70 hover:text-[#FAF8F5]">
+                        GE
+                    </button>
+                </div>
+
+                <!-- Live Emerald Call Now Button -->
+                <a href="tel:+995551309680" target="_top" onclick="showToast('ირეკება: +995 551 30 96 80...', 'Dialing +995 551 30 96 80...')" class="inline-flex items-center space-x-2 bg-[#093824] hover:bg-emerald-800 active:scale-95 text-[#FAF8F5] border border-emerald-400/40 px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition shadow-lg">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span>
+                    <span data-lang="en">Call Now</span>
+                    <span data-lang="ka">დარეკე</span>
+                </a>
+
+                <!-- Gold Book Session / Free Audit CTA -->
+                <button type="button" onclick="animateToBooking(this)" class="hidden sm:inline-flex items-center bg-gold-gradient active:scale-95 text-[#070A12] px-4 sm:px-5 py-2 rounded-full text-xs font-extrabold tracking-wide transition shadow-lg shadow-[#D4AF37]/20">
+                    <span data-lang="en">Free Audit</span>
+                    <span data-lang="ka">უფასო აუდიტი</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- HERO SECTION                               -->
+    <!-- ========================================== -->
+    <section id="hero" class="relative min-h-screen flex flex-col justify-center pt-32 pb-20 sm:pt-36 sm:pb-24 px-4 sm:px-8 overflow-hidden bg-gradient-to-b from-[#070A12] via-[#0B132B] to-[#070A12]">
+        <!-- Ambient Orbs & Grid Lines -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-[480px] h-[480px] rounded-full bg-[#D4AF37]/12 blur-[100px] orb-animate"></div>
+            <div class="absolute bottom-16 -left-20 w-[360px] h-[360px] rounded-full bg-[#093824]/35 blur-[95px] orb-animate" style="animation-delay: 2.5s;"></div>
+            <div class="absolute top-1/3 left-1/3 w-[300px] h-[300px] rounded-full bg-[#4A121A]/25 blur-[110px] orb-animate" style="animation-delay: 4s;"></div>
+            <div class="absolute inset-0 hero-grid"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto w-full relative z-10">
+            <!-- Luxury Location Badge -->
+            <div class="inline-flex items-center space-x-2.5 bg-[#0B132B]/90 border border-[#D4AF37]/40 rounded-full px-4 sm:px-5 py-2 mb-8 shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-[#D4AF37] live-dot"></span>
+                <span class="text-xs font-bold tracking-[0.16em] uppercase text-[#F3E5AB]">
+                    <span data-lang="en">Airbnb Optimization & Co-Hosting · Tbilisi, Georgia</span>
+                    <span data-lang="ka">Airbnb ოპტიმიზაცია და მართვა · თბილისი</span>
+                </span>
+            </div>
+
+            <!-- Massive Editorial Headline -->
+            <h1 class="text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] font-bold leading-[0.96] tracking-tight text-[#FAF8F5] mb-7">
+                <span data-lang="en">More guests.<br>More <em class="gradient-text italic font-luxury">bookings.</em></span>
+                <span data-lang="ka">მეტი სტუმარი.<br>მეტი <em class="gradient-text italic font-luxury">ჯავშანი.</em></span>
+            </h1>
+
+            <!-- Subheadline -->
+            <p class="text-base sm:text-xl text-[#FAF8F5]/75 max-w-2xl font-light leading-relaxed mb-10">
+                <span data-lang="en">
+                    We optimize your Airbnb listing so more people find it, click it, and book it—and we handle 24/7 guest communication when you don't have time. Title, photos, pricing, description, and settings—everything that matters.
+                </span>
+                <span data-lang="ka">
+                    ჩვენ სრულად ვაუმჯობესებთ თქვენს Airbnb-ის განცხადებას და ვმართავთ სტუმრებთან 24/7 კომუნიკაციას. სათაური, ფოტოები, ფასი, აღწერა და ალგორითმი — ყველაფერი, რაც მეტ ჯავშანს მოგიტანთ.
+                </span>
+            </p>
+
+            <!-- Hero CTA Buttons -->
+            <div class="flex flex-wrap items-center gap-4 mb-16">
+                <button type="button" onclick="animateToBooking(this)" class="w-full sm:w-auto bg-gold-gradient active:scale-95 text-[#070A12] px-8 py-4 rounded-full font-extrabold text-base transition-all duration-300 shadow-2xl shadow-[#D4AF37]/25 flex items-center justify-center space-x-2 border border-[#FFF5D6]/50">
+                    <span>✦</span>
+                    <span data-lang="en">Book Free Consultation</span>
+                    <span data-lang="ka">უფასო კონსულტაცია</span>
+                </button>
+
+                <a href="tel:+995551309680" target="_top" onclick="showToast('ირეკება: +995 551 30 96 80...', 'Dialing +995 551 30 96 80...')" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 bg-[#093824]/90 hover:bg-[#093824] active:scale-95 border border-emerald-400/40 text-[#FAF8F5] px-7 py-4 rounded-full font-bold text-base transition shadow-xl">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 live-dot"></span>
+                    <span data-lang="en">Call Now (<span class="font-num">+995 551 30 96 80</span>)</span>
+                    <span data-lang="ka">დარეკე (<span class="font-num">551 30 96 80</span>)</span>
+                </a>
+
+                <button type="button" onclick="scrollToSection('how')" class="w-full sm:w-auto bg-transparent hover:bg-white/5 text-[#FAF8F5] border border-[#D4AF37]/35 px-7 py-4 rounded-full font-semibold text-base transition">
+                    <span data-lang="en">How it works ↓</span>
+                    <span data-lang="ka">როგორ მუშაობს ↓</span>
+                </button>
+            </div>
+
+            <!-- Bold Numerals Stats Bar (.font-num ensures thick, high-contrast digits) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pt-10 border-t border-[#D4AF37]/25">
+                <div>
+                    <div class="text-3xl sm:text-5xl font-num text-[#FAF8F5] leading-none">
+                        2<span class="text-[#D4AF37] mx-1">→</span>365
+                    </div>
+                    <div class="text-xs sm:text-sm text-[#FAF8F5]/65 mt-2 font-medium">
+                        <span data-lang="en">bookings / year (real client)</span>
+                        <span data-lang="ka">ჯავშანი წელიწადში (რეალური შედეგი)</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="text-3xl sm:text-5xl font-num text-[#FAF8F5] leading-none">
+                        15<span class="text-[#D4AF37]">%</span>
+                    </div>
+                    <div class="text-xs sm:text-sm text-[#FAF8F5]/65 mt-2 font-medium">
+                        <span data-lang="en">commission on results only</span>
+                        <span data-lang="ka">საკომისიო მხოლოდ შედეგზე</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="text-3xl sm:text-5xl font-num text-[#FAF8F5] leading-none">
+                        6<span class="text-[#D4AF37] text-2xl sm:text-4xl ml-0.5">mo</span>
+                    </div>
+                    <div class="text-xs sm:text-sm text-[#FAF8F5]/65 mt-2 font-medium">
+                        <span data-lang="en">partnership period</span>
+                        <span data-lang="ka">თანამშრომლობის პერიოდი</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="text-3xl sm:text-5xl font-num text-[#FAF8F5] leading-none">
+                        24<span class="text-[#D4AF37]">/</span>7
+                    </div>
+                    <div class="text-xs sm:text-sm text-[#FAF8F5]/65 mt-2 font-medium">
+                        <span data-lang="en">VIP guest communication</span>
+                        <span data-lang="ka">კომუნიკაცია სტუმრებთან</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-[#D4AF37]/20 mx-4 sm:mx-12">
+
+    <!-- ========================================== -->
+    <!-- THE 6 PROBLEMS GRID                        -->
+    <!-- ========================================== -->
+    <section id="problems" class="py-20 sm:py-28 px-4 sm:px-8 max-w-6xl mx-auto reveal">
+        <div class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#D4AF37] mb-3">
+            <span data-lang="en">01 · The Problem</span>
+            <span data-lang="ka">01 · პრობლემა</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl md:text-6xl font-bold text-[#FAF8F5] leading-[1.08] mb-4">
+            <span data-lang="en">Why your listing<br>isn't getting booked</span>
+            <span data-lang="ka">რატომ არ ჯავშნიან<br>თქვენს განცხადებას</span>
+        </h2>
+        <p class="text-[#FAF8F5]/65 text-base sm:text-lg max-w-xl font-light mb-12">
+            <span data-lang="en">Even beautiful apartments in Tbilisi sit empty when these six algorithmic and presentation triggers are misconfigured.</span>
+            <span data-lang="ka">საუკეთესო ბინებიც კი ცარიელი რჩება, როდესაც ეს 6 მთავარი დეტალი და Airbnb-ის ალგორითმი არასწორად არის მომართული.</span>
+        </p>
+
+        <!-- 6-Card Luxury Architectural Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-[#D4AF37]/25 border border-[#D4AF37]/30 rounded-3xl overflow-hidden shadow-2xl">
+            <!-- Problem 1 -->
+            <div class="bg-[#070A12] hover:bg-[#0B132B] p-7 sm:p-9 transition duration-300 group">
+                <span class="text-3xl block mb-4 transform group-hover:scale-110 group-hover:-rotate-6 transition duration-300">📸</span>
+                <h3 class="text-xl font-bold text-[#FAF8F5] mb-2 group-hover:text-[#F3E5AB] transition">
+                    <span data-lang="en">Wrong cover photo</span>
+                    <span data-lang="ka">არასწორი მთავარი ფოტო</span>
+                </h3>
+                <p class="text-sm text-[#FAF8F5]/65 leading-relaxed">
+                    <span data-lang="en">Your first photo determines whether guests click or scroll past. Most hosts get this wrong.</span>
+                    <span data-lang="ka">პირველი ფოტო წყვეტს, დააწკაპუნებს სტუმარი თუ გადაახვევს. მასპინძლების უმეტესობა აქ უშვებს შეცდომას.</span>
                 </p>
             </div>
 
-            <!-- Pricing Cards -->
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- Option A: AI Autonomous -->
-                <div class="pricing-card ai-option glass-border rounded-2xl p-8 hover-lift cursor-pointer" 
-                     onclick="selectPlan('ai')">
-                    <div class="mb-6">
-                        <div class="ai-chip">🤖 FULLY AUTOMATED</div>
-                        <h2 class="text-3xl font-bold text-white mb-2">AI Autonomous</h2>
-                        <p class="text-gray-400 text-sm">Enhancement</p>
+            <!-- Problem 2 -->
+            <div class="bg-[#070A12] hover:bg-[#0B132B] p-7 sm:p-9 transition duration-300 group">
+                <span class="text-3xl block mb-4 transform group-hover:scale-110 group-hover:-rotate-6 transition duration-300">🔍</span>
+                <h3 class="text-xl font-bold text-[#FAF8F5] mb-2 group-hover:text-[#F3E5AB] transition">
+                    <span data-lang="en">No keywords in title</span>
+                    <span data-lang="ka">სათაური კეივორდების გარეშე</span>
+                </h3>
+                <p class="text-sm text-[#FAF8F5]/65 leading-relaxed">
+                    <span data-lang="en">If your title doesn't match what guests search, Airbnb won't show your listing. Simple as that.</span>
+                    <span data-lang="ka">თუ სათაური არ ემთხვევა იმას, რასაც ტურისტები ეძებენ, Airbnb უბრალოდ არ აჩვენებს თქვენს ბინას.</span>
+                </p>
+            </div>
+
+            <!-- Problem 3 -->
+            <div class="bg-[#070A12] hover:bg-[#0B132B] p-7 sm:p-9 transition duration-300 group">
+                <span class="text-3xl block mb-4 transform group-hover:scale-110 group-hover:-rotate-6 transition duration-300">💰</span>
+                <h3 class="text-xl font-bold text-[#FAF8F5] mb-2 group-hover:text-[#F3E5AB] transition">
+                    <span data-lang="en">Wrong pricing</span>
+                    <span data-lang="ka">არასწორი ფასწარმოება</span>
+                </h3>
+                <p class="text-sm text-[#FAF8F5]/65 leading-relaxed">
+                    <span data-lang="en">Too high kills bookings. Too low kills revenue. Most hosts are leaving money on the table.</span>
+                    <span data-lang="ka">ზედმეტად მაღალი ფასი კლავს ჯავშნებს, დაბალი კი — მოგებას. ფიქსირებული ფასით მუდმივად კარგავთ თანხას.</span>
+                </p>
+            </div>
+
+            <!-- Problem 4 -->
+            <div class="bg-[#070A12] hover:bg-[#0B132B] p-7 sm:p-9 transition duration-300 group">
+                <span class="text-3xl block mb-4 transform group-hover:scale-110 group-hover:-rotate-6 transition duration-300">📝</span>
+                <h3 class="text-xl font-bold text-[#FAF8F5] mb-2 group-hover:text-[#F3E5AB] transition">
+                    <span data-lang="en">Generic description</span>
+                    <span data-lang="ka">ზოგადი და მშრალი აღწერა</span>
+                </h3>
+                <p class="text-sm text-[#FAF8F5]/65 leading-relaxed">
+                    <span data-lang="en">"Nice apartment in good location" tells guests nothing. It should make them book immediately.</span>
+                    <span data-lang="ka">„კარგი ბინა ცენტრში“ სტუმარს არაფერს ეუბნება. აღწერა სტუმარს მაშინვე დაჯავშნის სურვილს უნდა უჩენდეს.</span>
+                </p>
+            </div>
+
+            <!-- Problem 5 -->
+            <div class="bg-[#070A12] hover:bg-[#0B132B] p-7 sm:p-9 transition duration-300 group">
+                <span class="text-3xl block mb-4 transform group-hover:scale-110 group-hover:-rotate-6 transition duration-300">⚙️</span>
+                <h3 class="text-xl font-bold text-[#FAF8F5] mb-2 group-hover:text-[#F3E5AB] transition">
+                    <span data-lang="en">Bad settings & slow replies</span>
+                    <span data-lang="ka">არასწორი პარამეტრები</span>
+                </h3>
+                <p class="text-sm text-[#FAF8F5]/65 leading-relaxed">
+                    <span data-lang="en">Instant Book off, wrong minimum stays, missing amenities, or late replies quietly kill your ranking.</span>
+                    <span data-lang="ka">გამორთული Instant Book, არასწორი მინიმალური ღამეები და დაგვიანებული პასუხები ჩუმად კლავს თქვენს რეიტინგს.</span>
+                </p>
+            </div>
+
+            <!-- Problem 6 -->
+            <div class="bg-[#070A12] hover:bg-[#0B132B] p-7 sm:p-9 transition duration-300 group">
+                <span class="text-3xl block mb-4 transform group-hover:scale-110 group-hover:-rotate-6 transition duration-300">📉</span>
+                <h3 class="text-xl font-bold text-[#FAF8F5] mb-2 group-hover:text-[#F3E5AB] transition">
+                    <span data-lang="en">Algorithm changes</span>
+                    <span data-lang="ka">ალგორითმის ცვლილებები</span>
+                </h3>
+                <p class="text-sm text-[#FAF8F5]/65 leading-relaxed">
+                    <span data-lang="en">Airbnb updates its algorithm constantly. What worked last year may hurt your visibility today.</span>
+                    <span data-lang="ka">Airbnb მუდმივად ანახლებს ძიების ალგორითმს. ის, რაც შარშან მუშაობდა, დღეს აღარ იძლევა შედეგს.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-[#D4AF37]/20 mx-4 sm:mx-12">
+
+    <!-- ========================================== -->
+    <!-- SIGNATURE SERVICES (2 CORE PILLARS)        -->
+    <!-- ========================================== -->
+    <section id="services" class="py-20 sm:py-28 px-4 sm:px-8 bg-[#0B132B]/60 reveal">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#D4AF37] mb-3">
+                <span data-lang="en">02 · Signature Services</span>
+                <span data-lang="ka">02 · ჩვენი სერვისები</span>
+            </div>
+            <h2 class="text-3xl sm:text-5xl md:text-6xl font-bold text-[#FAF8F5] leading-[1.08] mb-4">
+                <span data-lang="en">Two ways we help<br>your property win</span>
+                <span data-lang="ka">ორი გზა თქვენი ბინის<br>მაქსიმალური შედეგისთვის</span>
+            </h2>
+            <p class="text-[#FAF8F5]/70 text-base sm:text-lg max-w-2xl font-light mb-14">
+                <span data-lang="en">Select complete listing optimization to fix every problem holding your bookings back, or dedicated 24/7 bilingual guest communication.</span>
+                <span data-lang="ka">აირჩიეთ სრული ოპტიმიზაცია (ყველა პრობლემის მოგვარება) ან 24/7 რეჟიმში სტუმრებთან კომუნიკაცია.</span>
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Service 01: Full Optimization (Emerald & Gold on Warm Ivory) -->
+                <div class="bg-[#FAF8F5] text-[#070A12] rounded-3xl p-7 sm:p-10 border-2 border-[#D4AF37] shadow-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-36 h-36 bg-[#093824]/10 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-[#093824] text-[#F3E5AB] border border-[#D4AF37] flex items-center justify-center text-2xl shadow-md">
+                                🛠️
+                            </div>
+                            <span class="font-num text-xs uppercase tracking-wider bg-[#093824] text-[#F3E5AB] px-3.5 py-1.5 rounded-full border border-[#D4AF37]/50">
+                                <span data-lang="en">01 · Fix Every Problem</span>
+                                <span data-lang="ka">01 · ყველა პრობლემის მოგვარება</span>
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl sm:text-3xl font-bold text-[#070A12] mb-3">
+                            <span data-lang="en">Full Optimization (Fix Every Problem)</span>
+                            <span data-lang="ka">სრული ოპტიმიზაცია (ყველა პრობლემის გამოსწორება)</span>
+                        </h3>
+
+                        <p class="text-[#0B132B]/80 text-sm sm:text-base mb-6 leading-relaxed">
+                            <span data-lang="en">We audit and rebuild your entire Airbnb presence—cover photos, keyword-rich title, persuasive description, dynamic pricing, and ranking settings:</span>
+                            <span data-lang="ka">ჩვენ ვპოულობთ და ვასწორებთ ყველა ხარვეზს, რაც ჯავშნებს აფერხებს — ფოტოებს, სათაურს, აღწერას, ფასებს და Airbnb-ის პარამეტრებს:</span>
+                        </p>
+
+                        <ul class="space-y-3 text-sm text-[#0B132B] font-medium mb-8">
+                            <li class="flex items-start space-x-2.5">
+                                <span class="text-[#093824] font-extrabold">✦</span>
+                                <span data-lang="en">Title, SEO keywords & complete description rewrite</span>
+                                <span data-lang="ka">სათაურის, SEO კეივორდების და აღწერის სრული განახლება</span>
+                            </li>
+                            <li class="flex items-start space-x-2.5">
+                                <span class="text-[#093824] font-extrabold">✦</span>
+                                <span data-lang="en">Photo reordering + on-site shoot in Tbilisi if needed</span>
+                                <span data-lang="ka">ფოტოების გადალაგება + ადგილზე გადაღება საჭიროებისას</span>
+                            </li>
+                            <li class="flex items-start space-x-2.5">
+                                <span class="text-[#093824] font-extrabold">✦</span>
+                                <span data-lang="en">Dynamic pricing strategy & weekly algorithm monitoring</span>
+                                <span data-lang="ka">ჭკვიანური ფასწარმოება და ყოველკვირეული მონიტორინგი</span>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div class="mb-8">
-                        <span class="text-5xl font-bold text-white">$25</span>
-                        <span class="text-gray-400 ml-2">/month</span>
-                    </div>
-
-                    <p class="text-gray-300 mb-8 leading-relaxed">
-                        Fully automated, 24/7 algorithmic listing updates. Our AI syncs with the market daily, updating your titles, descriptions, and dynamic pricing rules automatically.
-                    </p>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start">
-                            <span class="text-green-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">Real-time market analysis</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">Auto-generated descriptions</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">Dynamic pricing adjustments</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">ML optimization engine</span>
-                        </li>
-                    </ul>
-
-                    <button class="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all">
-                        Choose AI Autonomous
+                    <button type="button" onclick="selectServiceAndBook('full')" class="w-full py-4 px-6 rounded-xl bg-[#093824] hover:bg-[#070A12] active:scale-95 text-[#F3E5AB] border border-[#D4AF37] font-extrabold text-sm transition shadow-lg tracking-wide">
+                        <span data-lang="en">Choose Full Optimization →</span>
+                        <span data-lang="ka">აირჩიეთ სრული ოპტიმიზაცია →</span>
                     </button>
                 </div>
 
-                <!-- Option B: Human Expert -->
-                <div class="pricing-card human-option glass-border rounded-2xl p-8 hover-lift cursor-pointer" 
-                     onclick="selectPlan('human')">
-                    <div class="mb-6">
-                        <div class="ai-chip">👤 HANDS-ON SUPPORT</div>
-                        <h2 class="text-3xl font-bold text-white mb-2">Human Expert</h2>
-                        <p class="text-gray-400 text-sm">Co-Pilot</p>
+                <!-- Service 02: 24/7 Guest Communication (Burgundy & Gold on Warm Ivory) -->
+                <div class="bg-[#FAF8F5] text-[#070A12] rounded-3xl p-7 sm:p-10 border-2 border-[#D4AF37] shadow-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-36 h-36 bg-[#4A121A]/10 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-[#4A121A] text-[#F3E5AB] border border-[#D4AF37] flex items-center justify-center text-2xl shadow-md">
+                                💬
+                            </div>
+                            <span class="font-num text-xs uppercase tracking-wider bg-[#4A121A] text-[#F3E5AB] px-3.5 py-1.5 rounded-full border border-[#D4AF37]/50">
+                                <span data-lang="en">02 · 24/7 VIP Concierge</span>
+                                <span data-lang="ka">02 · 24/7 კონსიერჟი</span>
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl sm:text-3xl font-bold text-[#070A12] mb-3">
+                            <span data-lang="en"><span class="font-num">24/7</span> Guest Communication</span>
+                            <span data-lang="ka"><span class="font-num">24/7</span> კომუნიკაცია სტუმრებთან</span>
+                        </h3>
+
+                        <p class="text-[#0B132B]/80 text-sm sm:text-base mb-6 leading-relaxed">
+                            <span data-lang="en">Too busy to reply to guests day and night? Our bilingual team handles every inquiry, check-in instruction, and support message in under 3 minutes:</span>
+                            <span data-lang="ka">არ გაქვთ დრო სტუმრებთან მუდმივი მიმოწერისთვის? ჩვენი გუნდი პასუხობს ყველა სტუმარს ქართულად და ინგლისურად <span class="font-num">3</span> წუთზე ნაკლებ დროში:</span>
+                        </p>
+
+                        <ul class="space-y-3 text-sm text-[#0B132B] font-medium mb-8">
+                            <li class="flex items-start space-x-2.5">
+                                <span class="text-[#4A121A] font-extrabold">✦</span>
+                                <span data-lang="en">Instant <span class="font-num">24/7</span> responses in fluent English & Georgian</span>
+                                <span data-lang="ka">მყისიერი <span class="font-num">24/7</span> პასუხები ინგლისურ და ქართულ ენებზე</span>
+                            </li>
+                            <li class="flex items-start space-x-2.5">
+                                <span class="text-[#4A121A] font-extrabold">✦</span>
+                                <span data-lang="en">Seamless check-in coordination & guest support</span>
+                                <span data-lang="ka">სტუმრების ჩექ-ინის ინსტრუქციები და სრული მხარდაჭერა</span>
+                            </li>
+                            <li class="flex items-start space-x-2.5">
+                                <span class="text-[#4A121A] font-extrabold">✦</span>
+                                <span data-lang="en"><span class="font-num">5</span>-star review management & Superhost ranking boost</span>
+                                <span data-lang="ka"><span class="font-num">5</span>-ვარსკვლავიანი შეფასებების და Superhost სტატუსის ზრდა</span>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div class="mb-8">
-                        <span class="text-5xl font-bold text-white">$26</span>
-                        <span class="text-gray-400 ml-2">/month</span>
-                    </div>
-
-                    <p class="text-gray-300 mb-8 leading-relaxed">
-                        Dedicated 1-on-1 human review, strategy calls, custom listing manual adjustments, and direct optimization support tailored to your property.
-                    </p>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start">
-                            <span class="text-cyan-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">Dedicated account manager</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-cyan-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">Weekly strategy calls</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-cyan-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">Custom manual adjustments</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-cyan-400 mr-3 text-xl">✓</span>
-                            <span class="text-gray-300">Personalized optimization</span>
-                        </li>
-                    </ul>
-
-                    <button class="w-full py-3 bg-gradient-to-r from-cyan-500 to-green-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all">
-                        Choose Human Co-Pilot
+                    <button type="button" onclick="selectServiceAndBook('comm')" class="w-full py-4 px-6 rounded-xl bg-[#4A121A] hover:bg-[#070A12] active:scale-95 text-[#F3E5AB] border border-[#D4AF37] font-extrabold text-sm transition shadow-lg tracking-wide">
+                        <span data-lang="en">Choose 24/7 Communication →</span>
+                        <span data-lang="ka">აირჩიეთ 24/7 კომუნიკაცია →</span>
                     </button>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Footer CTA -->
-            <div class="text-center mt-16 text-gray-500 text-sm">
-                <p>No credit card required • 14-day free trial • Cancel anytime</p>
+    <hr class="border-[#D4AF37]/20 mx-4 sm:mx-12">
+
+    <!-- ========================================== -->
+    <!-- TBILISI CASE STUDY + YIELD CALCULATOR      -->
+    <!-- ========================================== -->
+    <section id="results" class="py-20 sm:py-28 px-4 sm:px-8 max-w-6xl mx-auto reveal">
+        <div class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#D4AF37] mb-3">
+            <span data-lang="en">03 · Proven Results & Yield Estimator</span>
+            <span data-lang="ka">03 · რეალური შედეგი და კალკულატორი</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl md:text-6xl font-bold text-[#FAF8F5] leading-[1.08] mb-12">
+            <span data-lang="en">From <span class="font-num gradient-text">2</span> bookings<br>to fully booked</span>
+            <span data-lang="ka"><span class="font-num gradient-text">2</span> ჯავშნიდან<br>სრულ დაჯავშნამდე</span>
+        </h2>
+
+        <div class="grid lg:grid-cols-12 gap-8 items-stretch">
+            <!-- LEFT: Real Tbilisi Client Case Study (6 cols) -->
+            <div class="lg:col-span-6 bg-gradient-to-br from-[#0B132B] via-[#070A12] to-[#093824]/50 border-2 border-[#D4AF37]/45 rounded-3xl p-7 sm:p-10 relative overflow-hidden flex flex-col justify-between shadow-2xl">
+                <div class="font-luxury text-8xl text-[#D4AF37]/10 absolute top-2 left-6 pointer-events-none select-none">"</div>
+
+                <div class="relative z-10">
+                    <span class="inline-block bg-[#093824] text-[#F3E5AB] border border-[#D4AF37]/40 text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full mb-5">
+                        <span data-lang="en">Verified Tbilisi Case Study</span>
+                        <span data-lang="ka">თბილისის რეალური მაგალითი</span>
+                    </span>
+
+                    <p class="text-base sm:text-lg text-[#FAF8F5]/90 leading-relaxed font-light mb-8">
+                        <span data-lang="en">
+                            "A Tbilisi host had only <strong class="font-num text-[#F3E5AB]">2</strong> bookings in an entire year. After OrvianHost optimized the title, cover photos, description, and dynamic pricing strategy — the apartment's calendar was fully booked for the next <strong class="font-num text-[#F3E5AB]">12</strong> months."
+                        </span>
+                        <span data-lang="ka">
+                            „თბილისელ მასპინძელს მთელი წლის განმავლობაში მხოლოდ <strong class="font-num text-[#F3E5AB]">2</strong> ჯავშანი ჰქონდა. სათაურის, ფოტოების, აღწერის და ფასის ოპტიმიზაციის შემდეგ ბინის კალენდარი მომდევნო <strong class="font-num text-[#F3E5AB]">12</strong> თვის განმავლობაში სრულად შეივსო.“
+                        </span>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 sm:gap-4 relative z-10 pt-4 border-t border-[#D4AF37]/20">
+                    <div class="bg-[#070A12]/90 border border-[#D4AF37]/30 rounded-2xl p-4 text-center">
+                        <div class="text-2xl sm:text-3xl font-num text-rose-400">2</div>
+                        <div class="text-[11px] text-[#FAF8F5]/60 mt-1">
+                            <span data-lang="en">bookings before</span>
+                            <span data-lang="ka">ჯავშანი ადრე</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#093824]/90 border border-emerald-400/50 rounded-2xl p-4 text-center shadow-lg">
+                        <div class="text-2xl sm:text-3xl font-num text-emerald-300">365</div>
+                        <div class="text-[11px] text-[#FAF8F5]/90 font-semibold mt-1">
+                            <span data-lang="en">days booked after</span>
+                            <span data-lang="ka">დღე შემდეგ</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#070A12]/90 border border-[#D4AF37]/30 rounded-2xl p-4 text-center">
+                        <div class="text-xl sm:text-2xl font-luxury font-bold text-[#F3E5AB] mt-0.5">Tbilisi</div>
+                        <div class="text-[11px] text-[#FAF8F5]/60 mt-1">
+                            <span data-lang="en">location</span>
+                            <span data-lang="ka">ლოკაცია</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- LOADING OVERLAY -->
-    <div id="loadingOverlay" class="hidden">
-        <div class="loading-content">
-            <div class="loading-spinner mx-auto"></div>
-            <h3>Initializing HostAI</h3>
-            <p>Syncing with market data...</p>
-        </div>
-    </div>
-
-    <!-- MAIN DASHBOARD -->
-    <div id="mainDashboard" class="hidden min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-8">
-        <!-- Header -->
-        <div class="max-w-7xl mx-auto dashboard-enter">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+            <!-- RIGHT: Interactive Revenue & 15% Net Payout Calculator (6 cols) -->
+            <div class="lg:col-span-6 bg-[#FAF8F5] text-[#070A12] border-2 border-[#D4AF37] rounded-3xl p-7 sm:p-10 shadow-2xl flex flex-col justify-between">
                 <div>
-                    <h1 class="text-4xl font-bold text-white mb-2">HostAI Dashboard</h1>
-                    <p class="text-gray-400">Your listing optimization engine is live</p>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="bg-[#0B132B] text-[#F3E5AB] text-[11px] font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider">
+                            <span data-lang="en">Interactive Yield Calculator</span>
+                            <span data-lang="ka">შემოსავლის კალკულატორი</span>
+                        </span>
+                        <span class="font-num text-xs font-extrabold text-[#093824]">
+                            <span data-lang="en">You Keep 85%</span>
+                            <span data-lang="ka">85% რჩება თქვენ</span>
+                        </span>
+                    </div>
+
+                    <h3 class="text-2xl sm:text-3xl font-bold text-[#070A12] mb-2">
+                        <span data-lang="en">Estimate Your Monthly & Annual Gain</span>
+                        <span data-lang="ka">გამოთვალეთ თქვენი ბინის პოტენციალი</span>
+                    </h3>
+
+                    <div class="my-5">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <span class="text-xs sm:text-sm font-bold text-[#0B132B]">
+                                <span data-lang="en">Your Nightly Rate:</span>
+                                <span data-lang="ka">ღამის საშუალო ფასი:</span>
+                            </span>
+                            <span class="text-2xl sm:text-3xl font-num text-[#4A121A]">
+                                $<span id="calcRateVal">55</span>
+                                <span class="text-xs font-normal text-[#0B132B]/70">/ <span data-lang="en">night</span><span data-lang="ka">ღამე</span></span>
+                            </span>
+                        </div>
+
+                        <input type="range" id="calcRateSlider" min="25" max="200" step="5" value="55" oninput="updateYieldCalculator()" class="w-full h-2.5 bg-[#0B132B]/15 rounded-lg appearance-none cursor-pointer">
+
+                        <div class="flex justify-between text-xs font-num text-[#0B132B]/60 mt-1.5">
+                            <span>$25</span>
+                            <span>$100</span>
+                            <span>$200</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-6 md:mt-0 flex gap-4">
-                    <button onclick="resetDashboard()" class="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
-                        Back to Plans
+
+                <div class="bg-[#070A12] text-[#FAF8F5] rounded-2xl p-5 sm:p-6 border border-[#D4AF37]/40 space-y-4">
+                    <div class="grid grid-cols-2 gap-4 pb-4 border-b border-[#D4AF37]/20">
+                        <div>
+                            <div class="text-[11px] text-[#FAF8F5]/60">
+                                <span data-lang="en">Unoptimized (~<span class="font-num">8</span> nights/mo)</span>
+                                <span data-lang="ka">ახლა (~<span class="font-num">8</span> ღამე/თვეში)</span>
+                            </div>
+                            <div class="text-xl sm:text-2xl font-num text-[#FAF8F5]/80 mt-0.5">
+                                $<span id="calcBeforeMo">440</span><span class="text-xs font-normal">/mo</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-[11px] text-[#D4AF37] font-bold">
+                                <span data-lang="en">OrvianHost Net (After <span class="font-num">15%</span> fee)</span>
+                                <span data-lang="ka">სუფთა მოგება (<span class="font-num">15%</span>-ის შემდეგ)</span>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-num gradient-text mt-0.5">
+                                $<span id="calcNetAfterMo">1,183</span><span class="text-xs font-normal text-[#FAF8F5]/70">/mo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs sm:text-sm">
+                        <span class="text-[#FAF8F5]/75">
+                            <span data-lang="en">Extra Annual Net Profit in Your Pocket:</span>
+                            <span data-lang="ka">დამატებითი წლიური სუფთა მოგება:</span>
+                        </span>
+                        <span class="font-num text-base sm:text-lg text-emerald-400">
+                            +$<span id="calcExtraYear">8,916</span> / <span data-lang="en">yr</span><span data-lang="ka">წელ.</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-[#D4AF37]/20 mx-4 sm:mx-12">
+
+    <!-- ========================================== -->
+    <!-- HOW IT WORKS (01 - 04 PROCESS)             -->
+    <!-- ========================================== -->
+    <section id="how" class="py-20 sm:py-28 px-4 sm:px-8 max-w-6xl mx-auto reveal">
+        <div class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#D4AF37] mb-3">
+            <span data-lang="en">04 · How It Works</span>
+            <span data-lang="ka">04 · როგორ მუშაობს</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl md:text-6xl font-bold text-[#FAF8F5] leading-[1.08] mb-12">
+            <span data-lang="en">Simple. Fast. Results.</span>
+            <span data-lang="ka">მარტივი. სწრაფი. შედეგი.</span>
+        </h2>
+
+        <div class="divide-y divide-[#D4AF37]/20 border-y border-[#D4AF37]/20">
+            <!-- Step 01 -->
+            <div class="process-item py-8 sm:py-10 grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-8 items-start">
+                <div class="sm:col-span-2 text-4xl sm:text-6xl font-num text-[#D4AF37]/35">01</div>
+                <div class="sm:col-span-10">
+                    <h3 class="text-xl sm:text-2xl font-bold text-[#FAF8F5] mb-2">
+                        <span data-lang="en">You reach out</span>
+                        <span data-lang="ka">გვიკავშირდებით</span>
+                    </h3>
+                    <p class="text-sm sm:text-base text-[#FAF8F5]/70 max-w-2xl leading-relaxed">
+                        <span data-lang="en">Fill out the form below or call us directly. We review your listing and send you a free audit of exactly what's holding your bookings back within <span class="font-num text-[#F3E5AB]">24</span> hours.</span>
+                        <span data-lang="ka">შეავსეთ ფორმა ან დაგვირეკეთ. <span class="font-num text-[#F3E5AB]">24</span> საათის განმავლობაში გამოგიგზავნით თქვენი განცხადების სრულ უფასო აუდიტს.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 02 -->
+            <div class="process-item py-8 sm:py-10 grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-8 items-start">
+                <div class="sm:col-span-2 text-4xl sm:text-6xl font-num text-[#D4AF37]/35">02</div>
+                <div class="sm:col-span-10">
+                    <h3 class="text-xl sm:text-2xl font-bold text-[#FAF8F5] mb-2">
+                        <span data-lang="en">We optimize everything</span>
+                        <span data-lang="ka">ვაოპტიმიზებთ ყველაფერს</span>
+                    </h3>
+                    <p class="text-sm sm:text-base text-[#FAF8F5]/70 max-w-2xl leading-relaxed">
+                        <span data-lang="en">Title, description, photo order, dynamic pricing, and algorithm settings. We also visit your property in Tbilisi to capture stronger photos if needed.</span>
+                        <span data-lang="ka">სათაური, აღწერა, ფოტოები, ფასები და პარამეტრები. საჭიროების შემთხვევაში ადგილზე მოვდივართ უკეთესი ფოტოების გადასაღებად.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 03 -->
+            <div class="process-item py-8 sm:py-10 grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-8 items-start">
+                <div class="sm:col-span-2 text-4xl sm:text-6xl font-num text-[#D4AF37]/35">03</div>
+                <div class="sm:col-span-10">
+                    <h3 class="text-xl sm:text-2xl font-bold text-[#FAF8F5] mb-2">
+                        <span data-lang="en">Bookings increase</span>
+                        <span data-lang="ka">ჯავშნები იზრდება</span>
+                    </h3>
+                    <p class="text-sm sm:text-base text-[#FAF8F5]/70 max-w-2xl leading-relaxed">
+                        <span data-lang="en">We monitor search performance weekly, adjust nightly rates for peak demand, and handle <span class="font-num text-[#F3E5AB]">24/7</span> guest messaging while you watch your calendar fill up.</span>
+                        <span data-lang="ka">ყოველკვირეულად ვაკონტროლებთ რეიტინგს, ვარეგულირებთ ფასებს და ვპასუხობთ სტუმრებს <span class="font-num text-[#F3E5AB]">24/7</span>-ზე, სანამ თქვენი კალენდარი ივსება.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 04 -->
+            <div class="process-item py-8 sm:py-10 grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-8 items-start">
+                <div class="sm:col-span-2 text-4xl sm:text-6xl font-num text-[#D4AF37]/35">04</div>
+                <div class="sm:col-span-10">
+                    <h3 class="text-xl sm:text-2xl font-bold text-[#FAF8F5] mb-2">
+                        <span data-lang="en">Pay only on results</span>
+                        <span data-lang="ka">იხდით მხოლოდ შედეგზე</span>
+                    </h3>
+                    <p class="text-sm sm:text-base text-[#FAF8F5]/70 max-w-2xl leading-relaxed">
+                        <span data-lang="en"><span class="font-num text-[#F3E5AB]">15%</span> of booking revenue for <span class="font-num text-[#F3E5AB]">6</span> months. No bookings = no payment. After <span class="font-num text-[#F3E5AB]">6</span> months, continuing is entirely your choice.</span>
+                        <span data-lang="ka">ჯავშნის შემოსავლის მხოლოდ <span class="font-num text-[#F3E5AB]">15%</span> — <span class="font-num text-[#F3E5AB]">6</span> თვის განმავლობაში. თუ ჯავშნები არ გაიზარდა = არაფერს იხდით.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-[#D4AF37]/20 mx-4 sm:mx-12">
+
+    <!-- ========================================== -->
+    <!-- PRICING (15% RESULTS-ONLY MODEL)           -->
+    <!-- ========================================== -->
+    <section id="pricing" class="py-20 sm:py-28 px-4 sm:px-8 max-w-6xl mx-auto reveal">
+        <div class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#D4AF37] mb-3">
+            <span data-lang="en">05 · Transparent Pricing</span>
+            <span data-lang="ka">05 · გამჭვირვალე ტარიფი</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl md:text-6xl font-bold text-[#FAF8F5] leading-[1.08] mb-12">
+            <span data-lang="en">You only pay<br>when you earn</span>
+            <span data-lang="ka">იხდით მხოლოდ მაშინ,<br>როცა გამოიმუშავებთ</span>
+        </h2>
+
+        <div class="bg-gradient-to-br from-[#0B132B] via-[#070A12] to-[#0B132B] border-2 border-[#D4AF37] rounded-3xl p-7 sm:p-12 grid md:grid-cols-2 gap-8 sm:gap-12 items-center shadow-2xl">
+            <div>
+                <div class="text-6xl sm:text-8xl font-num gradient-text leading-none">15%</div>
+                <div class="text-sm sm:text-base text-[#FAF8F5]/75 mt-3 font-medium">
+                    <span data-lang="en">of monthly booking revenue · <span class="font-num text-[#F3E5AB]">6</span> months</span>
+                    <span data-lang="ka">ყოველთვიური ჯავშნის შემოსავლიდან · <span class="font-num text-[#F3E5AB]">6</span> თვე</span>
+                </div>
+
+                <div class="mt-6 bg-[#093824]/45 border border-[#D4AF37]/40 rounded-2xl p-5 text-sm text-[#FAF8F5]/90 leading-relaxed">
+                    <span data-lang="en">
+                        <strong class="text-[#F3E5AB]">Example:</strong> You earn <strong class="font-num text-white">$500</strong>/month from bookings → you keep <strong class="font-num text-emerald-300">$425</strong>, we take <strong class="font-num text-[#F3E5AB]">$75</strong>. Nothing more.
+                    </span>
+                    <span data-lang="ka">
+                        <strong class="text-[#F3E5AB]">მაგალითი:</strong> გამოიმუშავეთ <strong class="font-num text-white">$500</strong> თვეში → <strong class="font-num text-emerald-300">$425</strong> რჩება თქვენ, <strong class="font-num text-[#F3E5AB]">$75</strong> ჩვენი საკომისიოა. სხვა არანაირი გადასახადი.
+                    </span>
+                </div>
+            </div>
+
+            <div>
+                <ul class="space-y-3.5 text-sm sm:text-base text-[#FAF8F5]/85">
+                    <li class="flex items-start space-x-3">
+                        <span class="text-[#D4AF37] font-bold">→</span>
+                        <span data-lang="en">Full listing audit and algorithmic optimization</span>
+                        <span data-lang="ka">სრული აუდიტი და ალგორითმული ოპტიმიზაცია</span>
+                    </li>
+                    <li class="flex items-start space-x-3">
+                        <span class="text-[#D4AF37] font-bold">→</span>
+                        <span data-lang="en">High-converting title + full description rewrite</span>
+                        <span data-lang="ka">სათაურის + სრული აღწერის პროფესიონალური გადაწერა</span>
+                    </li>
+                    <li class="flex items-start space-x-3">
+                        <span class="text-[#D4AF37] font-bold">→</span>
+                        <span data-lang="en">Photo reordering + on-site shoot if needed</span>
+                        <span data-lang="ka">ფოტოების გადალაგება + გადაღება საჭიროებისას</span>
+                    </li>
+                    <li class="flex items-start space-x-3">
+                        <span class="text-[#D4AF37] font-bold">→</span>
+                        <span data-lang="en">Dynamic seasonal pricing strategy setup</span>
+                        <span data-lang="ka">სეზონური და დინამიური ფასის სტრატეგია</span>
+                    </li>
+                    <li class="flex items-start space-x-3">
+                        <span class="text-[#D4AF37] font-bold">→</span>
+                        <span data-lang="en">Settings, Instant Book & amenities audit</span>
+                        <span data-lang="ka">პარამეტრების და სერვისების სრული გამართვა</span>
+                    </li>
+                    <li class="flex items-start space-x-3">
+                        <span class="text-[#D4AF37] font-bold">→</span>
+                        <span data-lang="en">Weekly ranking monitoring for <span class="font-num">6</span> months</span>
+                        <span data-lang="ka">ყოველკვირეული მონიტორინგი <span class="font-num">6</span> თვის მანძილზე</span>
+                    </li>
+                    <li class="flex items-start space-x-3">
+                        <span class="text-[#D4AF37] font-bold">→</span>
+                        <span data-lang="en">Optional <span class="font-num">24/7</span> VIP guest communication support</span>
+                        <span data-lang="ka"><span class="font-num">24/7</span> სტუმრებთან კომუნიკაცია (სურვილისამებრ)</span>
+                    </li>
+                    <li class="flex items-start space-x-3">
+                        <span class="text-emerald-400 font-bold">✓</span>
+                        <span class="font-bold text-[#F3E5AB]" data-lang="en">No bookings = no payment</span>
+                        <span class="font-bold text-[#F3E5AB]" data-lang="ka">ჯავშნები არ გაიზარდა = არაფერს იხდით</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-[#D4AF37]/20 mx-4 sm:mx-12">
+
+    <!-- ========================================== -->
+    <!-- BOOKING & DIRECT CONCIERGE SECTION (#book) -->
+    <!-- ========================================== -->
+    <section id="book" class="py-20 sm:py-28 px-4 sm:px-8 max-w-6xl mx-auto reveal">
+        <div class="text-center mb-14">
+            <div class="text-xs font-extrabold uppercase tracking-[0.22em] text-[#D4AF37] mb-3">
+                <span data-lang="en">06 · Book a Free Audit Session</span>
+                <span data-lang="ka">06 · უფასო აუდიტის დაჯავშნა</span>
+            </div>
+            <h2 class="text-3xl sm:text-5xl md:text-6xl font-bold text-[#FAF8F5] leading-[1.08] mb-4">
+                <span data-lang="en">Ready to get<br>more bookings?</span>
+                <span data-lang="ka">მზად ხართ მეტი<br>ჯავშნისთვის?</span>
+            </h2>
+            <p class="text-[#FAF8F5]/70 max-w-xl mx-auto text-sm sm:text-base font-light">
+                <span data-lang="en">Fill this out and we'll send you a comprehensive free audit of your Airbnb listing within <span class="font-num text-[#F3E5AB]">24</span> hours.</span>
+                <span data-lang="ka">შეავსეთ ფორმა და <span class="font-num text-[#F3E5AB]">24</span> საათში გამოგიგზავნით თქვენი განცხადების დეტალურ უფასო აუდიტს.</span>
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-8 items-start">
+            <!-- LEFT COLUMN: Direct Concierge Desk (5 Cols) -->
+            <div class="lg:col-span-5 bg-[#0B132B] border border-[#D4AF37]/40 rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-[#F3E5AB] mb-1">
+                        <span data-lang="en">OrvianHost Direct Desk</span>
+                        <span data-lang="ka">პირდაპირი კონტაქტი</span>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-[#FAF8F5]/65">
+                        <span data-lang="en">Reach our Tbilisi team immediately via Phone, WhatsApp, or Email:</span>
+                        <span data-lang="ka">დაგვიკავშირდით პირდაპირ ტელეფონზე, WhatsApp-ში ან ელ-ფოსტაზე:</span>
+                    </p>
+                </div>
+
+                <!-- Card 1: Direct Phone Line (+995 551 30 96 80) -->
+                <div class="bg-[#070A12] border border-[#D4AF37]/35 p-4 sm:p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-[#F3E5AB]">
+                            <span data-lang="en">📞 Direct Phone Line</span>
+                            <span data-lang="ka">📞 სატელეფონო ზარი</span>
+                        </span>
+                        <span class="font-num text-xs sm:text-sm text-[#D4AF37]">+995 551 30 96 80</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="tel:+995551309680" target="_top" onclick="showToast('ირეკება: +995 551 30 96 80...', 'Dialing +995 551 30 96 80...')" class="bg-gold-gradient active:scale-95 text-[#070A12] text-xs font-extrabold py-2.5 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-md text-center">
+                            <span>📞</span>
+                            <span data-lang="en">Call Now</span>
+                            <span data-lang="ka">დარეკვა</span>
+                        </a>
+                        <button type="button" onclick="copyText('+995551309680', 'ნომერი დაკოპირდა: +995 551 30 96 80', 'Phone number copied: +995 551 30 96 80')" class="bg-[#0B132B] hover:bg-[#162447] active:scale-95 text-[#F3E5AB] border border-[#D4AF37]/35 text-xs font-num py-2.5 px-3 rounded-xl transition">
+                            📋 551 30 96 80
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2: WhatsApp Concierge (+995 551 30 96 80) -->
+                <div class="bg-[#070A12] border border-emerald-500/40 p-4 sm:p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-emerald-400">
+                            <span data-lang="en">💬 WhatsApp Concierge</span>
+                            <span data-lang="ka">💬 WhatsApp ჩატი</span>
+                        </span>
+                        <span class="font-num text-xs sm:text-sm text-[#F3E5AB]">+995 551 30 96 80</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="https://wa.me/995551309680?text=Hello%20OrvianHost!%20I%20would%20like%20a%20free%20Airbnb%20listing%20audit." target="_blank" rel="noopener noreferrer" onclick="showToast('იხსნება WhatsApp (+995 551 30 96 80)...', 'Opening WhatsApp (+995 551 30 96 80)...')" class="bg-[#093824] hover:bg-emerald-800 active:scale-95 text-[#F3E5AB] border border-[#D4AF37]/50 text-xs font-extrabold py-2.5 px-3 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-md text-center">
+                            <span>💬</span>
+                            <span data-lang="en">WhatsApp</span>
+                            <span data-lang="ka">მიწერა</span>
+                        </a>
+                        <button type="button" onclick="copyText('+995551309680', 'WhatsApp ნომერი დაკოპირდა!', 'WhatsApp number copied!')" class="bg-[#0B132B] hover:bg-[#162447] active:scale-95 text-[#FAF8F5] border border-[#D4AF37]/30 text-xs font-num py-2.5 px-3 rounded-xl transition">
+                            <span data-lang="en">📋 Copy</span>
+                            <span data-lang="ka">📋 კოპირება</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3: Official Email Desk (messagesforairbnb@gmail.com) -->
+                <div class="bg-[#070A12] border border-[#D4AF37]/40 p-4 sm:p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-[#D4AF37]">
+                            <span data-lang="en">✉️ Official Email Desk</span>
+                            <span data-lang="ka">✉️ ოფიციალური ელ-ფოსტა</span>
+                        </span>
+                        <span class="font-num text-[10px] bg-[#D4AF37]/15 text-[#F3E5AB] px-2 py-0.5 rounded-full border border-[#D4AF37]/30">24/7 Inbox</span>
+                    </div>
+
+                    <div onclick="copyText('messagesforairbnb@gmail.com', 'ელ-ფოსტა დაკოპირდა: messagesforairbnb@gmail.com', 'Email copied: messagesforairbnb@gmail.com')" class="cursor-pointer font-bold text-xs sm:text-sm break-all text-[#FAF8F5] hover:text-[#D4AF37] transition flex items-center justify-between bg-[#0B132B] px-3.5 py-2.5 rounded-xl border border-[#D4AF37]/25">
+                        <span>messagesforairbnb@gmail.com</span>
+                        <span class="text-xs text-[#D4AF37] ml-2 shrink-0">📋</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="mailto:messagesforairbnb@gmail.com?subject=OrvianHost%20Free%20Airbnb%20Audit" target="_top" onclick="showToast('იხსნება ელ-ფოსტის აპლიკაცია...', 'Opening Mail App...')" class="bg-gold-gradient active:scale-95 text-[#070A12] text-xs font-extrabold py-2.5 px-3 rounded-xl transition shadow-md flex items-center justify-center space-x-1 text-center">
+                            <span>✉️</span>
+                            <span data-lang="en">Send Email</span>
+                            <span data-lang="ka">მიწერა</span>
+                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=messagesforairbnb@gmail.com&su=OrvianHost%20Free%20Airbnb%20Audit" target="_blank" rel="noopener noreferrer" onclick="showToast('იხსნება Gmail...', 'Opening Gmail Web...')" class="bg-[#0B132B] hover:bg-[#162447] active:scale-95 text-[#F3E5AB] border border-[#D4AF37]/45 text-xs font-bold py-2.5 px-3 rounded-xl transition flex items-center justify-center space-x-1 text-center">
+                            <span>📨</span>
+                            <span data-lang="en">Open Gmail</span>
+                            <span data-lang="ka">Gmail (PC)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Luxury Booking & Free Audit Form (7 Cols) -->
+            <div id="bookingFormCard" class="lg:col-span-7 bg-[#FAF8F5] text-[#070A12] rounded-3xl p-6 sm:p-10 border-2 border-[#D4AF37] shadow-2xl transition-all duration-500">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-[#070A12]">
+                        <span data-lang="en">Request Your Free Listing Audit</span>
+                        <span data-lang="ka">მოითხოვეთ უფასო აუდიტი</span>
+                    </h3>
+                    <span class="font-num text-[11px] font-extrabold uppercase tracking-wider bg-[#093824] text-[#F3E5AB] px-3 py-1 rounded-full border border-[#D4AF37]/50">
+                        <span data-lang="en">✦ 24h Turnaround</span>
+                        <span data-lang="ka">✦ პასუხი 24 საათში</span>
+                    </span>
+                </div>
+
+                <!-- Inline Success Banner -->
+                <div id="formSuccessBanner" class="hidden mb-6 p-5 rounded-2xl bg-[#093824] border-2 border-[#D4AF37] text-[#FAF8F5] shadow-xl">
+                    <div class="font-luxury font-bold text-xl text-[#F3E5AB] mb-1 flex items-center space-x-2">
+                        <span>✓</span>
+                        <span data-lang="en">Request Sent to OrvianHost!</span>
+                        <span data-lang="ka">მოთხოვნა წარმატებით გაიგზავნა!</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#FAF8F5]/85 mb-4">
+                        <span data-lang="en">We'll review your listing and get back to you within 24 hours. For instant priority response, tap below to send your details via WhatsApp or Gmail:</span>
+                        <span data-lang="ka">განვიხილავთ თქვენს განცხადებას და 24 საათში დაგიკავშირდებით. სწრაფი პასუხისთვის შეგიძლიათ 1 კლიკით გამოგვიგზავნოთ WhatsApp-ში ან Gmail-ით:</span>
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <a id="bannerWhatsAppBtn" href="https://wa.me/995551309680" target="_blank" rel="noopener noreferrer" class="bg-gold-gradient text-[#070A12] text-xs font-extrabold px-3 py-3 rounded-xl text-center shadow-md">
+                            💬 WhatsApp (<span class="font-num">551 30 96 80</span>)
+                        </a>
+                        <a id="bannerGmailBtn" href="https://mail.google.com/mail/?view=cm&fs=1&to=messagesforairbnb@gmail.com" target="_blank" rel="noopener noreferrer" class="bg-[#0B132B] text-[#F3E5AB] border border-[#D4AF37]/50 text-xs font-extrabold px-3 py-3 rounded-xl text-center shadow-md">
+                            📨 Gmail (PC)
+                        </a>
+                        <a id="bannerMailtoBtn" href="mailto:messagesforairbnb@gmail.com" target="_top" class="bg-[#070A12] text-[#F3E5AB] border border-[#D4AF37]/40 text-xs font-extrabold px-3 py-3 rounded-xl text-center shadow-md">
+                            ✉️ Mail App
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hidden iframe fallback -->
+                <iframe name="hidden_audit_iframe" id="hidden_audit_iframe" style="display:none;"></iframe>
+
+                <form id="auditForm" action="https://formspree.io/f/xojpbonk" method="POST" onsubmit="handleAuditFormSubmit(event)" class="space-y-4">
+                    <input type="hidden" name="_subject" value="New OrvianHost Free Audit Inquiry!">
+
+                    <!-- Row 1: Name & Phone -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#0B132B] mb-1.5">
+                                <span data-lang="en">Your Name *</span>
+                                <span data-lang="ka">თქვენი სახელი *</span>
+                            </label>
+                            <input type="text" id="inputName" name="name" required placeholder="Nino / Giorgi" class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#0B132B]/25 focus:ring-2 focus:ring-[#D4AF37] focus:border-[#D4AF37] outline-none text-sm text-[#070A12] font-semibold transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#0B132B] mb-1.5">
+                                <span data-lang="en">Phone (WhatsApp / Telegram) *</span>
+                                <span data-lang="ka">ტელეფონი (WhatsApp / Telegram) *</span>
+                            </label>
+                            <input type="tel" id="inputPhone" name="phone" required placeholder="+995 551 30 96 80" class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#0B132B]/25 focus:ring-2 focus:ring-[#D4AF37] focus:border-[#D4AF37] outline-none text-sm font-num text-[#070A12] transition">
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Airbnb Listing URL -->
+                    <div>
+                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#0B132B] mb-1.5">
+                            <span data-lang="en">Airbnb Listing URL (Optional)</span>
+                            <span data-lang="ka">Airbnb განცხადების ბმული (არასავალდებულო)</span>
+                        </label>
+                        <input type="url" id="inputListingUrl" name="listing_url" placeholder="https://airbnb.com/rooms/..." class="w-full px-4 py-3.5 rounded-xl bg-white border border-[#0B132B]/25 focus:ring-2 focus:ring-[#D4AF37] focus:border-[#D4AF37] outline-none text-sm text-[#070A12] font-medium transition">
+                    </div>
+
+                    <!-- Row 3: Custom Luxury Service Picker + Custom Bookings Per Year Picker -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <!-- Custom Dropdown 1: What Do You Need Help With? -->
+                        <div class="relative" id="serviceSelectWrapper">
+                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#0B132B] mb-1.5">
+                                <span data-lang="en">What Do You Need Help With? *</span>
+                                <span data-lang="ka">რაში გჭირდებათ დახმარება? *</span>
+                            </label>
+                            <input type="hidden" id="inputService" name="service_needed" value="Full Optimization (Fix Every Problem)">
+
+                            <button type="button" id="serviceTriggerBtn" onclick="toggleServiceDropdown()" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#D4AF37] bg-[#0B132B] hover:bg-[#131F42] text-left transition flex items-center justify-between shadow-md">
+                                <div class="flex items-center space-x-2.5 min-w-0 pr-1">
+                                    <div id="serviceIconBadge" class="w-9 h-9 rounded-lg bg-[#093824] border border-[#D4AF37]/60 text-[#F3E5AB] flex items-center justify-center text-base shrink-0">
+                                        🛠️
+                                    </div>
+                                    <div class="truncate">
+                                        <div id="serviceLabelEn" data-lang="en" class="text-xs sm:text-sm font-extrabold text-[#FAF8F5] truncate">Full Optimization</div>
+                                        <div id="serviceLabelKa" data-lang="ka" class="text-xs sm:text-sm font-extrabold text-[#FAF8F5] truncate">სრული ოპტიმიზაცია</div>
+                                        <div id="serviceSubEn" data-lang="en" class="text-[10px] text-[#F3E5AB] font-semibold truncate">Fix Every Problem</div>
+                                        <div id="serviceSubKa" data-lang="ka" class="text-[10px] text-[#F3E5AB] font-semibold truncate">ყველა პრობლემის მოგვარება</div>
+                                    </div>
+                                </div>
+                                <span id="serviceArrow" class="w-6 h-6 rounded-full bg-[#070A12] border border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] text-[10px] shrink-0 transition-transform duration-200">▼</span>
+                            </button>
+
+                            <!-- Luxury Service Popup Menu -->
+                            <div id="serviceDropdownPopup" class="hidden absolute left-0 right-0 sm:w-[340px] mt-2 bg-[#070A12] text-[#FAF8F5] rounded-2xl shadow-2xl border-2 border-[#D4AF37] p-3 z-50 space-y-2">
+                                <div onclick="setServiceChoice('full')" id="serviceOptFull" class="cursor-pointer p-3 rounded-xl border-2 border-[#D4AF37] bg-[#093824]/90 hover:bg-[#093824] transition flex items-start space-x-3">
+                                    <div class="w-9 h-9 rounded-lg bg-[#070A12] border border-[#D4AF37] flex items-center justify-center text-lg shrink-0">🛠️</div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-luxury font-bold text-sm text-[#FAF8F5]">
+                                                <span data-lang="en">Full Optimization</span>
+                                                <span data-lang="ka">სრული ოპტიმიზაცია</span>
+                                            </span>
+                                            <span id="serviceCheckFull" class="w-5 h-5 rounded-full bg-gold-gradient text-[#070A12] flex items-center justify-center text-xs font-extrabold">✓</span>
+                                        </div>
+                                        <p class="text-[11px] text-[#F3E5AB] font-semibold mt-0.5">
+                                            <span data-lang="en">✦ Fix Every Problem (Photos, SEO, Pricing)</span>
+                                            <span data-lang="ka">✦ ყველა პრობლემის მოგვარება</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div onclick="setServiceChoice('comm')" id="serviceOptComm" class="cursor-pointer p-3 rounded-xl border-2 border-transparent bg-[#0B132B] hover:bg-[#4A121A]/85 hover:border-[#D4AF37]/60 transition flex items-start space-x-3">
+                                    <div class="w-9 h-9 rounded-lg bg-[#4A121A] border border-[#D4AF37]/60 flex items-center justify-center text-lg shrink-0">💬</div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-luxury font-bold text-sm text-[#FAF8F5]">
+                                                <span data-lang="en"><span class="font-num">24/7</span> Guest Communication</span>
+                                                <span data-lang="ka"><span class="font-num">24/7</span> კომუნიკაცია სტუმრებთან</span>
+                                            </span>
+                                            <span id="serviceCheckComm" class="hidden w-5 h-5 rounded-full bg-gold-gradient text-[#070A12] flex items-center justify-center text-xs font-extrabold">✓</span>
+                                        </div>
+                                        <p class="text-[11px] text-[#F3E5AB] font-semibold mt-0.5">
+                                            <span data-lang="en">⚡ Instant Bilingual Replies 24/7</span>
+                                            <span data-lang="ka">⚡ მყისიერი პასუხები 24/7-ზე</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Dropdown 2: Bookings Per Year? -->
+                        <div class="relative" id="bookingsSelectWrapper">
+                            <label class="block text-xs font-extrabold uppercase tracking-wider text-[#0B132B] mb-1.5">
+                                <span data-lang="en">Bookings Per Year?</span>
+                                <span data-lang="ka">ჯავშნები წელიწადში?</span>
+                            </label>
+                            <input type="hidden" id="inputBookingsPerYear" name="bookings_per_year" value="0-5 (almost none)">
+
+                            <button type="button" id="bookingsTriggerBtn" onclick="toggleBookingsDropdown()" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#0B132B]/25 hover:border-[#D4AF37] bg-white text-left transition flex items-center justify-between h-[58px]">
+                                <div>
+                                    <div id="bookingsDisplayText" class="font-num text-sm text-[#070A12]">0–5</div>
+                                    <div id="bookingsSubText" class="text-[10px] text-[#0B132B]/65 font-semibold">
+                                        <span data-lang="en">almost none / new listing</span>
+                                        <span data-lang="ka">თითქმის არ არის / ახალი</span>
+                                    </div>
+                                </div>
+                                <span id="bookingsArrow" class="w-6 h-6 rounded-full bg-[#0B132B]/10 flex items-center justify-center text-[#070A12] text-[10px] transition-transform duration-200">▼</span>
+                            </button>
+
+                            <div id="bookingsDropdownPopup" class="hidden absolute left-0 right-0 mt-2 bg-[#070A12] text-[#FAF8F5] rounded-2xl shadow-2xl border-2 border-[#D4AF37] overflow-hidden z-50 divide-y divide-[#D4AF37]/15">
+                                <div onclick="setBookingsChoice('0–5', '0-5 (almost none)')" class="cursor-pointer px-4 py-3 hover:bg-[#093824] transition flex items-center justify-between">
+                                    <span class="font-num text-sm text-[#FAF8F5]">0–5</span>
+                                    <span class="text-xs text-[#F3E5AB]">
+                                        <span data-lang="en">(almost none)</span>
+                                        <span data-lang="ka">(თითქმის არ არის)</span>
+                                    </span>
+                                </div>
+                                <div onclick="setBookingsChoice('6–20', '6-20 bookings/year')" class="cursor-pointer px-4 py-3 hover:bg-[#093824] transition flex items-center justify-between">
+                                    <span class="font-num text-sm text-[#FAF8F5]">6–20</span>
+                                    <span class="text-xs text-[#FAF8F5]/60">
+                                        <span data-lang="en">low occupancy</span>
+                                        <span data-lang="ka">დაბალი დატვირთვა</span>
+                                    </span>
+                                </div>
+                                <div onclick="setBookingsChoice('21–50', '21-50 bookings/year')" class="cursor-pointer px-4 py-3 hover:bg-[#093824] transition flex items-center justify-between">
+                                    <span class="font-num text-sm text-[#FAF8F5]">21–50</span>
+                                    <span class="text-xs text-[#FAF8F5]/60">
+                                        <span data-lang="en">moderate</span>
+                                        <span data-lang="ka">საშუალო</span>
+                                    </span>
+                                </div>
+                                <div onclick="setBookingsChoice('50+', '50+ bookings/year')" class="cursor-pointer px-4 py-3 hover:bg-[#093824] transition flex items-center justify-between">
+                                    <span class="font-num text-sm text-[#FAF8F5]">50+</span>
+                                    <span class="text-xs text-emerald-400">
+                                        <span data-lang="en">scaling yield</span>
+                                        <span data-lang="ka">მეტი შემოსავლისთვის</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Message -->
+                    <div>
+                        <label class="block text-xs font-extrabold uppercase tracking-wider text-[#0B132B] mb-1.5">
+                            <span data-lang="en">Message or Apartment Details (Optional)</span>
+                            <span data-lang="ka">შეტყობინება ან ბინის დეტალები (არასავალდებულო)</span>
+                        </label>
+                        <textarea id="inputMessage" name="message" rows="3" placeholder="e.g. 1-bedroom apartment in Old Tbilisi / მაგ: 2-ოთახიანი ბინა თბილისში..." class="w-full px-4 py-3 rounded-xl bg-white border border-[#0B132B]/25 focus:ring-2 focus:ring-[#D4AF37] focus:border-[#D4AF37] outline-none text-sm text-[#070A12] font-medium transition"></textarea>
+                    </div>
+
+                    <!-- Submit CTA Button -->
+                    <button type="submit" id="auditSubmitBtn" class="w-full bg-[#070A12] hover:bg-[#0B132B] border-2 border-[#D4AF37] active:scale-95 text-[#F3E5AB] font-extrabold py-4 rounded-xl transition-all duration-300 shadow-xl text-base flex items-center justify-center space-x-2.5 cursor-pointer">
+                        <span id="auditSubmitIcon" class="inline-block text-xl">✈️</span>
+                        <span id="auditSubmitText">
+                            <span data-lang="en">Send — get my free audit →</span>
+                            <span data-lang="ka">გაგზავნა — მინდა უფასო აუდიტი →</span>
+                        </span>
                     </button>
-                </div>
+                </form>
             </div>
         </div>
+    </section>
 
-        <!-- AI LIVE LEARNING FEED -->
-        <div class="max-w-7xl mx-auto mb-12 stagger-child">
-            <div class="glass rounded-xl p-6 md:p-8">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
-                    <span class="text-cyan-400 mr-3">🧠</span>
-                    Daily Algorithm Brain Updates
-                </h2>
-                
-                <div class="marquee-container bg-slate-900 rounded-lg py-4">
-                    <div class="marquee">
-                        <div class="marquee-item feed-item">
-                            <div class="inline-block">
-                                <span class="text-cyan-400 font-semibold">📈 Learning:</span>
-                                <span class="text-gray-300 ml-2">Short, punchy 5-word titles with emotional hooks ranking 18% higher in Tbilisi this week</span>
-                            </div>
-                        </div>
-                        <div class="marquee-item feed-item">
-                            <div class="inline-block">
-                                <span class="text-green-400 font-semibold">💰 Insight:</span>
-                                <span class="text-gray-300 ml-2">Weekend premiums optimized to +4% due to local event influx</span>
-                            </div>
-                        </div>
-                        <div class="marquee-item feed-item">
-                            <div class="inline-block">
-                                <span class="text-yellow-400 font-semibold">🎯 Trend:</span>
-                                <span class="text-gray-300 ml-2">Listings with verified reviews converting 23% faster than unverified</span>
-                            </div>
-                        </div>
-                        <div class="marquee-item feed-item">
-                            <div class="inline-block">
-                                <span class="text-cyan-400 font-semibold">📱 Update:</span>
-                                <span class="text-gray-300 ml-2">Mobile-first design strategy increasing mobile bookings by 31%</span>
-                            </div>
-                        </div>
-                        <div class="marquee-item feed-item">
-                            <div class="inline-block">
-                                <span class="text-green-400 font-semibold">🔍 Discovery:</span>
-                                <span class="text-gray-300 ml-2">Amenity-focused descriptions outperforming feature-first copy by 12%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- ========================================== -->
+    <!-- LUXURY FOOTER                              -->
+    <!-- ========================================== -->
+    <footer class="border-t border-[#D4AF37]/25 bg-[#05070D] py-10 px-4 sm:px-8 text-xs sm:text-sm text-[#FAF8F5]/65">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <a href="#" onclick="scrollToSection('hero'); return false;" class="text-xl font-luxury font-bold text-[#FAF8F5] tracking-tight">
+                Orvian<em class="gradient-text font-luxury italic">Host</em>
+            </a>
+
+            <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6">
+                <a href="tel:+995551309680" target="_top" class="font-num text-[#F3E5AB] hover:underline">
+                    📞 +995 551 30 96 80
+                </a>
+                <a href="https://wa.me/995551309680" target="_blank" rel="noopener noreferrer" class="font-num text-emerald-400 hover:underline">
+                    💬 WhatsApp: 551 30 96 80
+                </a>
+                <a href="mailto:messagesforairbnb@gmail.com" target="_top" class="text-[#F3E5AB] hover:underline font-medium">
+                    ✉️ messagesforairbnb@gmail.com
+                </a>
+            </div>
+
+            <div class="text-xs text-[#FAF8F5]/50">
+                © <span class="font-num">2026</span> OrvianHost ·
+                <span data-lang="en">Luxury Airbnb Optimization · Tbilisi, Georgia</span>
+                <span data-lang="ka">Airbnb ოპტიმიზაცია · თბილისი</span>
             </div>
         </div>
+    </footer>
 
-        <!-- ORIGINAL VS OPTIMIZED COMPARISON -->
-        <div class="max-w-7xl mx-auto mb-12 stagger-child">
-            <h2 class="text-2xl font-bold text-white mb-6">Listing Transformation</h2>
-            
-            <div class="comparison-split">
-                <!-- Original -->
-                <div class="comparison-panel original">
-                    <div class="text-gray-400 text-sm font-semibold mb-4 uppercase tracking-wide">Your Current Listing</div>
-                    <div class="enhanced-title text-gray-300">Cozy apartment in Tbilisi</div>
-                    <div class="enhanced-desc">
-                        This is a nice apartment in the city center. It has 2 bedrooms and 1 bathroom. Very clean and comfortable. Close to restaurants and shops.
-                    </div>
-                </div>
-
-                <!-- Optimized -->
-                <div class="comparison-panel optimized">
-                    <div class="text-cyan-400 text-sm font-semibold mb-4 uppercase tracking-wide">✨ AI Enhanced Asset</div>
-                    <div class="enhanced-title">
-                        <span class="highlight">Chic Urban Sanctuary</span> - Modern 2BR Retreat
-                    </div>
-                    <div class="enhanced-desc">
-                        Discover your perfect city escape in heart-of-Tbilisi luxury. This beautifully appointed 2-bedroom sanctuary blends contemporary elegance with authentic Georgian charm. Every detail curated for unforgettable stays.
-                        <div class="mt-4 flex flex-wrap gap-2">
-                            <span class="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-1 rounded">Premium Location</span>
-                            <span class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded">Walkable Neighborhood</span>
-                            <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded">Modern Amenities</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- REVENUE AUDIT METRICS -->
-        <div class="max-w-7xl mx-auto mb-12 stagger-child">
-            <h2 class="text-2xl font-bold text-white mb-6">Projected Impact</h2>
-            
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Occupancy Boost -->
-                <div class="metric-card">
-                    <div class="text-gray-400 text-sm font-semibold mb-3">Occupancy Boost</div>
-                    <div class="metric-value">+23%</div>
-                    <p class="text-gray-500 text-xs mt-3">Based on enhanced listing visibility and conversion</p>
-                </div>
-
-                <!-- Monthly Revenue Lift -->
-                <div class="metric-card">
-                    <div class="text-gray-400 text-sm font-semibold mb-3">Monthly Revenue Lift</div>
-                    <div class="metric-value">+$1,245</div>
-                    <p class="text-gray-500 text-xs mt-3">Estimated additional revenue from optimizations</p>
-                </div>
-
-                <!-- Response Time -->
-                <div class="metric-card">
-                    <div class="text-gray-400 text-sm font-semibold mb-3">AI Update Frequency</div>
-                    <div class="metric-value">24/7</div>
-                    <p class="text-gray-500 text-xs mt-3">Continuous learning and optimization cycles</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- ACTION BUTTONS -->
-        <div class="max-w-7xl mx-auto stagger-child">
-            <div class="glass rounded-xl p-8 text-center">
-                <h3 class="text-xl font-bold text-white mb-4">Ready to Optimize?</h3>
-                <button onclick="triggerOptimization()" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all">
-                    ▶ Run AI Enhancement Optimization
-                </button>
-                <p class="text-gray-400 text-sm mt-4">Updates apply in real-time across all channels</p>
-            </div>
-        </div>
-
-        <!-- Success Message -->
-        <div id="successMessage" class="fixed top-8 left-8 hidden">
-            <div class="success-message glass-border rounded-lg px-6 py-4 text-green-400 font-semibold">
-                ✓ Optimization complete! Your listing is now live.
-            </div>
-        </div>
-    </div>
-
+    <!-- ========================================== -->
+    <!-- COMPLETE INTERACTIVE JAVASCRIPT ENGINE     -->
+    <!-- ========================================== -->
     <script>
-        // STATE MANAGEMENT
-        let currentPlan = null;
+        const ORVIAN_EMAIL = "messagesforairbnb@gmail.com";
+        const ORVIAN_PHONE = "+995551309680";
+        const ORVIAN_PHONE_DISPLAY = "+995 551 30 96 80";
+        const ORVIAN_WHATSAPP = "995551309680";
+        const FORMSPREE_ENDPOINT = "https://formspree.io/f/xojpbonk";
 
-        function selectPlan(plan) {
-            currentPlan = plan;
-            showLoadingOverlay();
-            
-            setTimeout(() => {
-                hideLoadingOverlay();
-                showDashboard();
-            }, 2000);
+        // 1. Smooth Scroll Helper
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
-        function showLoadingOverlay() {
-            document.getElementById('loadingOverlay').classList.remove('hidden');
-        }
-
-        function hideLoadingOverlay() {
-            document.getElementById('loadingOverlay').classList.add('hidden');
-        }
-
-        function showDashboard() {
-            document.getElementById('pricingGateway').classList.add('hidden');
-            document.getElementById('mainDashboard').classList.remove('hidden');
-            
-            // Trigger animations
-            animateDashboardElements();
-        }
-
-        function resetDashboard() {
-            document.getElementById('mainDashboard').classList.add('hidden');
-            document.getElementById('pricingGateway').classList.remove('hidden');
-            currentPlan = null;
-        }
-
-        function animateDashboardElements() {
-            const staggerChildren = document.querySelectorAll('.stagger-child');
-            staggerChildren.forEach((child, index) => {
-                child.style.opacity = '0';
-                child.style.animation = 'none';
+        // 2. Animated Scroll to Booking Form + Gold Glow Highlight
+        function animateToBooking(btn) {
+            if (btn) {
+                btn.classList.add('scale-90', 'ring-4', 'ring-[#D4AF37]');
+                setTimeout(() => btn.classList.remove('scale-90', 'ring-4', 'ring-[#D4AF37]'), 300);
+            }
+            scrollToSection('book');
+            const card = document.getElementById('bookingFormCard');
+            if (card) {
+                card.classList.remove('highlight-pulse');
                 setTimeout(() => {
-                    child.style.animation = 'fadeInUp 0.8s ease-out backwards';
-                    child.style.animationDelay = `${index * 0.1}s`;
-                }, 10);
-            });
+                    card.classList.add('highlight-pulse', 'ring-4', 'ring-[#D4AF37]');
+                    const nameField = document.getElementById('inputName');
+                    if (nameField) nameField.focus({ preventScroll: true });
+                }, 450);
+                setTimeout(() => card.classList.remove('ring-4', 'ring-[#D4AF37]'), 1800);
+            }
         }
 
-        function triggerOptimization() {
-            showLoadingOverlay();
-            
+        // 3. Language Switcher (EN <-> KA) with Smooth Animation & Persistence
+        function setLanguage(lang, skipAnimation) {
+            const html = document.documentElement;
+            const body = document.body;
+            const btnEn = document.getElementById('btnLangEn');
+            const btnKa = document.getElementById('btnLangKa');
+            const pill = document.getElementById('langTogglePill');
+
+            const applyLang = () => {
+                html.setAttribute('lang', lang);
+                try {
+                    localStorage.setItem('orvian_lang', lang);
+                } catch (e) {}
+
+                if (lang === 'ka') {
+                    btnKa.className = "px-2.5 sm:px-3 py-1 rounded-full text-xs font-extrabold transition-all duration-200 bg-gold-gradient text-[#070A12]";
+                    btnEn.className = "px-2.5 sm:px-3 py-1 rounded-full text-xs font-extrabold transition-all duration-200 text-[#FAF8F5]/70 hover:text-[#FAF8F5]";
+                } else {
+                    btnEn.className = "px-2.5 sm:px-3 py-1 rounded-full text-xs font-extrabold transition-all duration-200 bg-gold-gradient text-[#070A12]";
+                    btnKa.className = "px-2.5 sm:px-3 py-1 rounded-full text-xs font-extrabold transition-all duration-200 text-[#FAF8F5]/70 hover:text-[#FAF8F5]";
+                }
+            };
+
+            if (skipAnimation) {
+                applyLang();
+                return;
+            }
+
+            pill.classList.add('scale-90');
+            body.classList.add('lang-switching');
+
             setTimeout(() => {
-                hideLoadingOverlay();
-                showSuccessMessage();
-                
-                // Animate comparison panels
-                const panels = document.querySelectorAll('.comparison-panel');
-                panels.forEach(panel => {
-                    panel.style.animation = 'pulse-subtle 1s ease-in-out';
-                });
-            }, 2500);
+                applyLang();
+                body.classList.remove('lang-switching');
+                pill.classList.remove('scale-90');
+                showToast(
+                    lang === 'ka' ? "ენა შეიცვალა ქართულზე 🇬🇪" : "Language switched to English 🇬🇧",
+                    lang === 'ka' ? "ენა შეიცვალა ქართულზე 🇬🇪" : "Language switched to English 🇬🇧"
+                );
+            }, 200);
         }
 
-        function showSuccessMessage() {
-            const message = document.getElementById('successMessage');
-            message.classList.remove('hidden');
-            
-            setTimeout(() => {
-                message.classList.add('hidden');
-            }, 4000);
+        // Restore saved language if available
+        try {
+            const savedLang = localStorage.getItem('orvian_lang');
+            if (savedLang === 'ka' || savedLang === 'en') {
+                setLanguage(savedLang, true);
+            }
+        } catch (e) {}
+
+        // 4. Interactive Yield & 15% Net Payout Calculator
+        function updateYieldCalculator() {
+            const rate = parseInt(document.getElementById('calcRateSlider').value, 10);
+            document.getElementById('calcRateVal').innerText = rate;
+
+            // Unoptimized: ~8 nights/month
+            const beforeMonthly = Math.round(rate * 8);
+            // OrvianHost Optimized: ~22 nights/month at +15% higher nightly rate, minus 15% commission (host keeps 85%)
+            const grossOptimizedMonthly = Math.round(rate * 1.15 * 22);
+            const netHostMonthly = Math.round(grossOptimizedMonthly * 0.85);
+            const extraAnnualNet = Math.max(0, (netHostMonthly - beforeMonthly) * 12);
+
+            document.getElementById('calcBeforeMo').innerText = beforeMonthly.toLocaleString();
+            document.getElementById('calcNetAfterMo').innerText = netHostMonthly.toLocaleString();
+            document.getElementById('calcExtraYear').innerText = extraAnnualNet.toLocaleString();
         }
 
-        // Initialize with pricing gateway visible
-        document.addEventListener('DOMContentLoaded', () => {
-            // Animate pricing cards on load
-            const cards = document.querySelectorAll('.pricing-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.animation = 'none';
-                setTimeout(() => {
-                    card.style.animation = index === 0 ? 'slideInLeft 0.8s ease-out' : 'slideInRight 0.8s ease-out';
-                }, 10);
-            });
+        // 5. Custom Luxury Service Selector Popup
+        function toggleServiceDropdown() {
+            closeBookingsDropdown();
+            const popup = document.getElementById('serviceDropdownPopup');
+            const arrow = document.getElementById('serviceArrow');
+            if (popup.classList.contains('hidden')) {
+                popup.classList.remove('hidden');
+                popup.classList.add('dropdown-open');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                closeServiceDropdown();
+            }
+        }
+
+        function closeServiceDropdown() {
+            const popup = document.getElementById('serviceDropdownPopup');
+            const arrow = document.getElementById('serviceArrow');
+            if (popup && !popup.classList.contains('hidden')) {
+                popup.classList.add('hidden');
+                popup.classList.remove('dropdown-open');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function setServiceChoice(type, silent) {
+            const input = document.getElementById('inputService');
+            const badge = document.getElementById('serviceIconBadge');
+            const labelEn = document.getElementById('serviceLabelEn');
+            const labelKa = document.getElementById('serviceLabelKa');
+            const subEn = document.getElementById('serviceSubEn');
+            const subKa = document.getElementById('serviceSubKa');
+
+            const optFull = document.getElementById('serviceOptFull');
+            const optComm = document.getElementById('serviceOptComm');
+            const checkFull = document.getElementById('serviceCheckFull');
+            const checkComm = document.getElementById('serviceCheckComm');
+
+            if (type === 'comm') {
+                input.value = "24/7 Guest Communication / 24/7 კომუნიკაცია სტუმრებთან";
+                badge.innerText = "💬";
+                badge.className = "w-9 h-9 rounded-lg bg-[#4A121A] border border-[#D4AF37]/60 text-[#F3E5AB] flex items-center justify-center text-base shrink-0";
+                labelEn.innerText = "24/7 Guest Communication";
+                labelKa.innerText = "24/7 კომუნიკაცია სტუმრებთან";
+                subEn.innerText = "Instant VIP Replies 24/7";
+                subKa.innerText = "მყისიერი პასუხები 24/7";
+
+                optComm.className = "cursor-pointer p-3 rounded-xl border-2 border-[#D4AF37] bg-[#4A121A]/90 hover:bg-[#4A121A] transition flex items-start space-x-3";
+                optFull.className = "cursor-pointer p-3 rounded-xl border-2 border-transparent bg-[#0B132B] hover:bg-[#093824]/75 hover:border-[#D4AF37]/60 transition flex items-start space-x-3";
+                checkComm.classList.remove('hidden');
+                checkFull.classList.add('hidden');
+            } else {
+                input.value = "Full Optimization (Fix Every Problem) / სრული ოპტიმიზაცია";
+                badge.innerText = "🛠️";
+                badge.className = "w-9 h-9 rounded-lg bg-[#093824] border border-[#D4AF37]/60 text-[#F3E5AB] flex items-center justify-center text-base shrink-0";
+                labelEn.innerText = "Full Optimization";
+                labelKa.innerText = "სრული ოპტიმიზაცია";
+                subEn.innerText = "Fix Every Problem";
+                subKa.innerText = "ყველა პრობლემის მოგვარება";
+
+                optFull.className = "cursor-pointer p-3 rounded-xl border-2 border-[#D4AF37] bg-[#093824]/90 hover:bg-[#093824] transition flex items-start space-x-3";
+                optComm.className = "cursor-pointer p-3 rounded-xl border-2 border-transparent bg-[#0B132B] hover:bg-[#4A121A]/75 hover:border-[#D4AF37]/60 transition flex items-start space-x-3";
+                checkFull.classList.remove('hidden');
+                checkComm.classList.add('hidden');
+            }
+
+            if (!silent) {
+                closeServiceDropdown();
+            }
+        }
+
+        function selectServiceAndBook(type) {
+            setServiceChoice(type, true);
+            animateToBooking(null);
+        }
+
+        // 6. Custom Bookings-Per-Year Dropdown
+        function toggleBookingsDropdown() {
+            closeServiceDropdown();
+            const popup = document.getElementById('bookingsDropdownPopup');
+            const arrow = document.getElementById('bookingsArrow');
+            if (popup.classList.contains('hidden')) {
+                popup.classList.remove('hidden');
+                popup.classList.add('dropdown-open');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                closeBookingsDropdown();
+            }
+        }
+
+        function closeBookingsDropdown() {
+            const popup = document.getElementById('bookingsDropdownPopup');
+            const arrow = document.getElementById('bookingsArrow');
+            if (popup && !popup.classList.contains('hidden')) {
+                popup.classList.add('hidden');
+                popup.classList.remove('dropdown-open');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function setBookingsChoice(displayNum, fullValue) {
+            document.getElementById('inputBookingsPerYear').value = fullValue;
+            document.getElementById('bookingsDisplayText').innerText = displayNum;
+            closeBookingsDropdown();
+        }
+
+        // Close custom dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            const sWrap = document.getElementById('serviceSelectWrapper');
+            const bWrap = document.getElementById('bookingsSelectWrapper');
+            if (sWrap && !sWrap.contains(e.target)) closeServiceDropdown();
+            if (bWrap && !bWrap.contains(e.target)) closeBookingsDropdown();
         });
 
-        // Smooth scroll behavior
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                target?.scrollIntoView({ behavior: 'smooth' });
+        // 7. Toast & Copy Utilities
+        function showToast(msgKa, msgEn) {
+            const isKa = document.documentElement.getAttribute('lang') === 'ka';
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-message');
+            msg.innerText = isKa ? msgKa : msgEn;
+            toast.classList.remove('translate-y-28', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-28', 'opacity-0'), 3800);
+        }
+
+        function copyText(text, msgKa, msgEn) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            temp.style.position = 'fixed';
+            temp.style.opacity = '0';
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+            } catch (e) {}
+            document.body.removeChild(temp);
+            showToast(msgKa, msgEn);
+        }
+
+        // 8. Dual Form Submission (Formspree + FormSubmit + Instant Dispatch Modal)
+        async function handleAuditFormSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('inputName').value.trim();
+            const phone = document.getElementById('inputPhone').value.trim();
+            const listingUrl = document.getElementById('inputListingUrl').value.trim() || "Not provided";
+            const service = document.getElementById('inputService').value;
+            const bookingsPerYear = document.getElementById('inputBookingsPerYear').value;
+            const message = document.getElementById('inputMessage').value.trim() || "No extra notes";
+
+            const btn = document.getElementById('auditSubmitBtn');
+            const icon = document.getElementById('auditSubmitIcon');
+            const text = document.getElementById('auditSubmitText');
+            const isKa = document.documentElement.getAttribute('lang') === 'ka';
+
+            btn.disabled = true;
+            icon.classList.add('fly-away');
+            text.innerHTML = isKa
+                ? '⏳ იგზავნება OrvianHost-ის გუნდთან...'
+                : '⏳ Sending your audit request...';
+
+            const summaryBody =
+                `New OrvianHost Free Audit Request:\n` +
+                `----------------------------------\n` +
+                `👤 Name: ${name}\n` +
+                `📞 Phone / WhatsApp: ${phone}\n` +
+                `🏠 Airbnb URL: ${listingUrl}\n` +
+                `🛠️ Service: ${service}\n` +
+                `📊 Bookings/Year: ${bookingsPerYear}\n` +
+                `💬 Details: ${message}`;
+
+            const encodedSubject = encodeURIComponent(`OrvianHost Audit Request: ${name} (${phone})`);
+            const encodedBody = encodeURIComponent(summaryBody);
+
+            const waUrl = `https://wa.me/${ORVIAN_WHATSAPP}?text=${encodedBody}`;
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${ORVIAN_EMAIL}&su=${encodedSubject}&body=${encodedBody}`;
+            const mailtoUrl = `mailto:${ORVIAN_EMAIL}?subject=${encodedSubject}&body=${encodedBody}`;
+
+            document.getElementById('bannerWhatsAppBtn').href = waUrl;
+            document.getElementById('bannerGmailBtn').href = gmailUrl;
+            document.getElementById('bannerMailtoBtn').href = mailtoUrl;
+
+            const payload = new FormData();
+            payload.append("name", name);
+            payload.append("phone", phone);
+            payload.append("listing_url", listingUrl);
+            payload.append("service_needed", service);
+            payload.append("bookings_per_year", bookingsPerYear);
+            payload.append("message", message);
+            payload.append("_subject", `New OrvianHost Inquiry from ${name} (${phone})`);
+            payload.append("_captcha", "false");
+
+            // Send to both Formspree (from BookMore) and FormSubmit (messagesforairbnb@gmail.com)
+            try {
+                fetch(FORMSPREE_ENDPOINT, {
+                    method: 'POST',
+                    body: payload,
+                    headers: { 'Accept': 'application/json' }
+                }).catch(() => {});
+
+                fetch(`https://formsubmit.co/ajax/${ORVIAN_EMAIL}`, {
+                    method: 'POST',
+                    body: payload,
+                    headers: { 'Accept': 'application/json' }
+                }).catch(() => {});
+            } catch (err) {}
+
+            setTimeout(() => {
+                icon.classList.remove('fly-away');
+                icon.innerText = '✓';
+                btn.classList.remove('bg-[#070A12]');
+                btn.classList.add('bg-[#093824]');
+                text.innerHTML = isKa
+                    ? '✓ მოთხოვნა გაიგზავნა!'
+                    : '✓ Request Sent — Free Audit Queued!';
+
+                const banner = document.getElementById('formSuccessBanner');
+                banner.classList.remove('hidden');
+                banner.classList.add('highlight-pulse');
+
+                openDispatchModal(name, phone, service, bookingsPerYear, waUrl, gmailUrl, mailtoUrl);
+
+                showToast(
+                    "მოთხოვნა გაიგზავნა! 24 საათში დაგიკავშირდებით.",
+                    "Audit request sent! We'll reply within 24 hours."
+                );
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    icon.innerText = '✈️';
+                    btn.classList.remove('bg-[#093824]');
+                    btn.classList.add('bg-[#070A12]');
+                    text.innerHTML = `
+                        <span data-lang="en">Send — get my free audit →</span>
+                        <span data-lang="ka">გაგზავნა — მინდა უფასო აუდიტი →</span>
+                    `;
+                }, 4000);
+            }, 650);
+        }
+
+        function openDispatchModal(name, phone, service, bookingsPerYear, waUrl, gmailUrl, mailtoUrl) {
+            const modal = document.getElementById('luxuryActionModal');
+            const content = document.getElementById('modalBodyContent');
+
+            content.innerHTML = `
+                <div class="bg-[#070A12] border border-[#D4AF37]/45 p-4 rounded-2xl text-xs space-y-1.5 text-[#FAF8F5]/90">
+                    <div class="text-[#D4AF37] font-bold uppercase tracking-wider mb-1">
+                        OrvianHost Audit Summary
+                    </div>
+                    <div><strong>👤 Name:</strong> ${name}</div>
+                    <div><strong>📞 Phone:</strong> <span class="font-num">${phone}</span></div>
+                    <div><strong>🛠️ Service:</strong> ${service}</div>
+                    <div><strong>📊 Bookings/Yr:</strong> <span class="font-num">${bookingsPerYear}</span></div>
+                </div>
+
+                <p class="text-xs text-[#FAF8F5]/80 leading-relaxed">
+                    <span data-lang="en">Your request has been logged. You can also send it directly to our WhatsApp (<span class="font-num">+995 551 30 96 80</span>) or Email (<span class="text-[#F3E5AB]">messagesforairbnb@gmail.com</span>) with 1 click:</span>
+                    <span data-lang="ka">თქვენი მოთხოვნა მიღებულია. სურვილისამებრ, შეგიძლიათ 1 კლიკით გააგზავნოთ პირდაპირ WhatsApp-ში (<span class="font-num">+995 551 30 96 80</span>) ან ელ-ფოსტაზე:</span>
+                </p>
+
+                <div class="space-y-2.5">
+                    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full bg-[#093824] hover:bg-emerald-800 text-[#F3E5AB] border-2 border-[#D4AF37] font-extrabold py-3.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg text-xs sm:text-sm">
+                        <span>💬</span>
+                        <span data-lang="en">Send Instantly via WhatsApp (<span class="font-num">+995 551 30 96 80</span>)</span>
+                        <span data-lang="ka">გაგზავნა WhatsApp-ში (<span class="font-num">+995 551 30 96 80</span>)</span>
+                    </a>
+
+                    <a href="${gmailUrl}" target="_blank" rel="noopener noreferrer" class="w-full bg-gold-gradient text-[#070A12] font-extrabold py-3.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg text-xs sm:text-sm">
+                        <span>📨</span>
+                        <span data-lang="en">Send via Gmail Web (messagesforairbnb@gmail.com)</span>
+                        <span data-lang="ka">გაგზავნა Gmail-ით (PC / ბრაუზერი)</span>
+                    </a>
+
+                    <a href="${mailtoUrl}" target="_top" class="w-full bg-[#070A12] hover:bg-[#131F42] text-[#F3E5AB] border border-[#D4AF37]/60 font-extrabold py-3.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg text-xs sm:text-sm">
+                        <span>✉️</span>
+                        <span data-lang="en">Open Default Mail App</span>
+                        <span data-lang="ka">გახსნა Mail აპლიკაციაში</span>
+                    </a>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeLuxuryModal() {
+            document.getElementById('luxuryActionModal').classList.add('hidden');
+        }
+
+        function handleModalBackdropClick(e) {
+            if (e.target.id === 'luxuryActionModal') closeLuxuryModal();
+        }
+
+        // 9. Scroll Reveal Observer
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
-        });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Initialize calculator on load
+        updateYieldCalculator();
     </script>
 </body>
 </html>
